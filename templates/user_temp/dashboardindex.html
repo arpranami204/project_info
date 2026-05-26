@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">  
+{% load static %}
+
+<head>
+
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – ElderCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'user_sta/style.css' %}"/>
+</head>
+<body class="dashboard-body">
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-brand-icon"><i class="fas fa-heart-pulse"></i></div>
+    <span>Elder<em style="font-style:italic;color:var(--brand);">Care</em></span>
+  </div> 
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="{% url 'dashboardindex_view' %}" class="sidebar-link active"><i class="fas fa-gauge-high"></i><span>Dashboard</span></a>
+    <a href="{% url 'list_elderprofile' %}" class="sidebar-link"><i class="fas fa-id-card"></i><span>Elder Profiles</span><span class="badge-pill">{{ elder_count }}</span></a>
+    <a href="{% url 'list_healthrecord' %}" class="sidebar-link"><i class="fas fa-notes-medical"></i><span>Health Records</span></a>
+    <a href="{% url 'list_medicine' %}" class="sidebar-link"><i class="fas fa-pills"></i><span>Medicines</span><span class="badge-pill warn">{{ medicine_count }}</span></a>
+    <div class="nav-section-label">Services</div>
+    <a href="{% url 'doctorlist_view' %}" class="sidebar-link"><i class="fas fa-user-doctor"></i><span>Doctors</span></a>
+    <a href="{% url 'caretaker_view' %}" class="sidebar-link"><i class="fas fa-hands-holding-heart"></i><span>Caretakers</span></a>
+    <a href="{% url 'list_booking' %}" class="sidebar-link"><i class="fas fa-calendar-check"></i><span>Bookings</span></a>
+    <a href="{% url 'appointment_view' %}" class="sidebar-link"><i class="fas fa-clock-rotate-left"></i><span>History</span></a>
+    <a href="{% url 'list_payment' %}" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+    <div class="nav-section-label">Alerts</div>
+    <a href="{% url 'list_emergencyalert' %}" class="sidebar-link sos-link"><i class="fas fa-bell"></i><span>SOS Alerts</span><span class="badge-pill danger"></span></a>
+    <a href="{% url 'list_notification' %}" class="sidebar-link"><i class="fas fa-envelope-open-text"></i><span>Notifications</span></a>
+    <div class="nav-section-label">Account</div>
+    <a href="{% url 'profile_view' %}" class="sidebar-link"><i class="fas fa-user-gear"></i><span>Profile</span></a>
+    <a href="{% url 'login_view' %}" class="sidebar-link"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+  </nav>      
+</div>
+
+<div class="main-content" id="mainContent">
+  <div class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    <div class="topbar-title">Dashboard</div>
+    <div class="topbar-right">
+      <button class="sos-trigger" id="sosBtn"><i class="fas fa-bell"></i> SOS</button>
+      <div class="topbar-notif"><i class="fas fa-bell"></i><span class="notif-dot"></span></div>
+      <div class="topbar-user">
+        <img src="https://ui-avatars.com/api/?name={{ request.user }}&background=e8d5b7&color=7a5c3a&size=36&rounded=true" alt="user"/>
+        <span>{{ request.user }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="welcome-banner" data-animate="fadeInUp">
+      <div>
+        <h2>Good Morning, {{ request.user }} </h2>
+        <p>Here's an overview of your elder care activity today.</p>
+      </div>  
+      <div class="welcome-date">
+        <i class="fas fa-calendar-day"></i>
+        <span id="currentDate"></span>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="row g-3 mb-4">
+      <div class="col-xl-3 col-sm-6" data-animate="fadeInUp" data-delay="0">
+        <div class="stat-card" style="--card-accent:#e8745a">
+          <div class="sc-icon"><i class="fas fa-users"></i></div>
+          <div class="sc-info">
+            <span class="sc-num" data-count="{{ elder_count }}">{{ elder_count }}</span>
+            <span class="sc-label">Elder Profiles</span>
+            <div class="sc-trend up"><i class="fas fa-circle" style="font-size:0.5rem"></i> Active</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6" data-animate="fadeInUp" data-delay="100">
+        <div class="stat-card" style="--card-accent:#5a8ae8">
+          <div class="sc-icon"><i class="fas fa-calendar-check"></i></div>
+          <div class="sc-info">
+            <span class="sc-num" data-count="{{ booking_count }}">{{ booking_count }}</span>
+            <span class="sc-label">Total Bookings</span>
+            <div class="sc-trend warn"><i class="fas fa-clock"></i> All</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6" data-animate="fadeInUp" data-delay="200">
+        <div class="stat-card" style="--card-accent:#5abf8a">
+          <div class="sc-icon"><i class="fas fa-pills"></i></div>
+          <div class="sc-info">
+            <span class="sc-num" data-count="{{ medicine_count }}">{{ medicine_count }}</span>
+            <span class="sc-label">Medicines</span>
+            <div class="sc-trend warn"><i class="fas fa-exclamation-circle"></i> Active</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-sm-6" data-animate="fadeInUp" data-delay="300">
+        <div class="stat-card" style="--card-accent:#e8b85a">
+          <div class="sc-icon"><i class="fas fa-bell"></i></div>
+          <div class="sc-info">
+            <span class="sc-num" data-count="{{ sos_count }}">{{ sos_count }}</span>
+            <span class="sc-label">SOS Alerts</span>
+            <div class="sc-trend up"><i class="fas fa-check-circle"></i> Total</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEALTH VITALS + MEDICINE -->
+    <div class="row g-3 mb-4">
+      <div class="col-lg-7" data-animate="fadeInUp">
+        <div class="dash-card">
+          <div class="dc-header">
+            <h5><i class="fas fa-heart-pulse"></i>Latest Vitals: {% if latest_record %}{{ latest_record.elder.full_name }}{% else %}No Record{% endif %}</h5>
+            <a href="{% url 'list_healthrecord' %}" class="dc-action">View All Records</a>
+          </div>
+          {% if latest_record %}
+          <div class="vitals-grid">
+            <div class="vital-box" style="--vclr:#e8745a">
+              <div class="vb-icon"><i class="fas fa-tint"></i></div>
+              <div class="vb-info">
+                <span class="vb-val">{{ latest_record.blood_pressure|default:"--" }}</span>
+                <span class="vb-lbl">Blood Pressure</span>
+              </div>
+              <div class="vb-status">Recorded</div>
+              <div class="vb-bar"><div class="vb-fill" style="width:72%"></div></div>
+            </div>
+            <div class="vital-box" style="--vclr:#5a8ae8">
+              <div class="vb-icon"><i class="fas fa-fire-flame-curved"></i></div>
+              <div class="vb-info">
+                <span class="vb-val">{{ latest_record.sugar_level|default:"--" }} mg/dL</span>
+                <span class="vb-lbl">Sugar Level</span>
+              </div>
+              <div class="vb-status">Recorded</div>
+              <div class="vb-bar"><div class="vb-fill" style="width:55%"></div></div>
+            </div>
+            <div class="vital-box" style="--vclr:#5abf8a">
+              <div class="vb-icon"><i class="fas fa-weight-scale"></i></div>
+              <div class="vb-info">
+                <span class="vb-val">{{ latest_record.weight|default:"--" }} kg</span>
+                <span class="vb-lbl">Weight</span>
+              </div>
+              <div class="vb-status">Recorded</div>
+              <div class="vb-bar"><div class="vb-fill" style="width:60%"></div></div>
+            </div>
+            <div class="vital-box" style="--vclr:#c45ae8">
+              <div class="vb-icon"><i class="fas fa-heart"></i></div>
+              <div class="vb-info">
+                <span class="vb-val">{{ latest_record.heart_rate|default:"--" }} bpm</span>
+                <span class="vb-lbl">Heart Rate</span>
+              </div>
+              <div class="vb-status">Recorded</div>
+              <div class="vb-bar"><div class="vb-fill" style="width:65%"></div></div>
+            </div>
+          </div>
+          {% else %}
+          <div class="p-4 text-center">
+            <p class="text-muted">No health records found yet.</p>
+            <a href="{% url 'create_healthrecord' %}" class="btn btn-sm btn-brand">Add First Record</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-5" data-animate="fadeInUp" data-delay="100">
+        <div class="dash-card h-100">
+          <div class="dc-header">
+            <h5><i class="fas fa-pills"></i>Today's Medicines</h5>
+            <a href="#" class="dc-action">Manage All</a>
+          </div>
+          <div class="med-list">
+            <div class="med-row done">
+              <div class="mr-left">
+                <div class="mr-dot"></div>
+                <div><strong>Metformin 500mg</strong><span>Morning · After food</span></div>
+              </div>
+              <span class="mr-badge done"><i class="fas fa-check me-1"></i>Taken</span>
+            </div>
+            <div class="med-row pending">
+              <div class="mr-left">
+                <div class="mr-dot"></div>
+                <div><strong>Amlodipine 5mg</strong><span>Evening · Before food</span></div>
+              </div>
+              <span class="mr-badge pending">Pending</span>
+            </div>
+            <div class="med-row pending">
+              <div class="mr-left">
+                <div class="mr-dot"></div>
+                <div><strong>Atorvastatin 10mg</strong><span>Night · After food</span></div>
+              </div>
+              <span class="mr-badge pending">Pending</span>
+            </div>
+            <div class="med-row done">
+              <div class="mr-left">
+                <div class="mr-dot"></div>
+                <div><strong>Vitamin D3</strong><span>Morning · With water</span></div>
+              </div>
+              <span class="mr-badge done"><i class="fas fa-check me-1"></i>Taken</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT BOOKINGS + NOTIFICATIONS -->
+    <div class="row g-3 mb-4">
+      <div class="col-lg-7" data-animate="fadeInUp">
+        <div class="dash-card">
+          <div class="dc-header">
+            <h5><i class="fas fa-calendar-check"></i>Recent Bookings</h5>
+            <a href="{% url 'services_view' %}" class="dc-action">View All</a>
+          </div>
+          <div class="table-responsive">
+            <table class="dash-table">
+              <thead>
+                <tr><th>Service</th><th>Date</th><th>Status</th><th>Payment</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="svc-badge doctor"><i class="fas fa-user-doctor"></i> Doctor</span></td>
+                  <td>12 Jan 2025</td>
+                  <td><span class="status-pill approved"><i class="fas fa-thumbs-up"></i>Approved</span></td>
+                  <td><span class="pay-pill paid"><i class="fas fa-check"></i>Paid</span></td>
+                  <td><button class="btn-icon-sm view"><i class="fas fa-eye"></i></button></td>
+                </tr>
+                <tr>
+                  <td><span class="svc-badge caretaker"><i class="fas fa-hands-holding"></i> Caretaker</span></td>
+                  <td>18 Jan 2025</td>
+                  <td><span class="status-pill pending"><i class="fas fa-clock"></i>Pending</span></td>
+                  <td><span class="pay-pill unpaid">Unpaid</span></td>
+                  <td><button class="btn-icon-sm pay"><i class="fas fa-credit-card"></i></button></td>
+                </tr>
+                <tr>
+                  <td><span class="svc-badge doctor"><i class="fas fa-user-doctor"></i> Doctor</span></td>
+                  <td>22 Jan 2025</td>
+                  <td><span class="status-pill completed"><i class="fas fa-check"></i>Completed</span></td>
+                  <td><span class="pay-pill paid"><i class="fas fa-check"></i>Paid</span></td>
+                  <td><button class="btn-icon-sm view"><i class="fas fa-eye"></i></button></td>
+                </tr>
+                <tr>
+                  <td><span class="svc-badge caretaker"><i class="fas fa-hands-holding"></i> Caretaker</span></td>
+                  <td>05 Feb 2025</td>
+                  <td><span class="status-pill pending"><i class="fas fa-clock"></i>Pending</span></td>
+                  <td><span class="pay-pill unpaid">Unpaid</span></td>
+                  <td><button class="btn-icon-sm pay"><i class="fas fa-credit-card"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5" data-animate="fadeInUp" data-delay="100">
+        <div class="dash-card h-100">
+          <div class="dc-header">
+            <h5><i class="fas fa-envelope-open-text"></i>Notifications</h5>
+            <a href="#" class="dc-action">Mark all read</a>
+          </div>
+          <div class="notif-list">
+            <div class="notif-item unread">
+              <div class="ni-icon success"><i class="fas fa-check"></i></div>
+              <div class="ni-info"><strong>Booking Approved</strong><p>Your doctor appointment has been approved by admin.</p><span>2 hrs ago</span></div>
+            </div>
+            <div class="notif-item unread">
+              <div class="ni-icon warning"><i class="fas fa-pills"></i></div>
+              <div class="ni-info"><strong>Medicine Reminder</strong><p>Time for Amlodipine 5mg — Evening dose.</p><span>4 hrs ago</span></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon info"><i class="fas fa-credit-card"></i></div>
+              <div class="ni-info"><strong>Payment Received</strong><p>₹500 payment confirmed for Booking #7.</p><span>Yesterday</span></div>
+            </div>
+            <div class="notif-item">
+              <div class="ni-icon danger"><i class="fas fa-bell"></i></div>
+              <div class="ni-info"><strong>SOS Alert Resolved</strong><p>Emergency alert has been resolved by admin.</p><span>2 days ago</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="row g-3" data-animate="fadeInUp">
+      <div class="col-12">
+        <div class="dash-card">
+          <div class="dc-header"><h5><i class="fas fa-bolt"></i>Quick Actions</h5></div>
+          <div class="p-3 d-flex gap-2 flex-wrap">
+            <a href="{% url 'elderlist_view' %}" class="btn btn-brand btn-sm"><i class="fas fa-plus me-1"></i>Add Elder Profile</a>
+            <a href="{% url 'doctorlist_view' %}" class="btn btn-outline-brand btn-sm"><i class="fas fa-user-doctor me-1"></i>Book Doctor</a>
+            <a href="{% url 'caretaker_view' %}" class="btn btn-outline-brand btn-sm"><i class="fas fa-hands-holding-heart me-1"></i>Request Caretaker</a>
+            <a href="{% url 'appointment_view' %}" class="btn btn-ghost btn-sm"><i class="fas fa-clock-rotate-left me-1"></i>View History</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOS MODAL -->
+<div class="sos-modal" id="sosModal">
+  <div class="sos-modal-inner">
+    <div class="sos-pulse"></div>
+    <i class="fas fa-bell sos-icon"></i>
+    <h3>Send SOS Alert?</h3>
+    <p>This will immediately notify the admin team with your emergency details and current timestamp.</p>
+    <div class="sos-modal-actions">
+      <button class="btn btn-brand btn-lg w-100" style="background:var(--red);border-color:var(--red);" id="confirmSos">
+        <i class="fas fa-bell me-2"></i>Send Alert Now
+      </button>
+      <button class="btn btn-ghost w-100" id="cancelSos">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'user_sta/main.js'%}"></script>
+</body>
+</html>

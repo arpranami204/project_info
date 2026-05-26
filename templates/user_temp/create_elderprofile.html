@@ -1,0 +1,30 @@
+{% extends 'user_temp/user_master.html' %}
+{% load static %}
+
+{% block title %}Create Elder Profile{% endblock %}
+{% block heading %}Create Elder Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card my-4 border-0 shadow-sm">
+            <div class="card-header bg-white pb-0 border-0 pt-4">
+                <h4 class="card-title mb-0" style="color: var(--brand);">Create Elder Profile</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.as_p }}
+                    </div>
+                    
+                    <div class="mb-0 text-end d-flex justify-content-end gap-2 mt-4">
+                        <button type="reset" class="btn btn-light me-2 px-4 py-2 border">Reset</button>
+                        <button type="submit" class="btn btn-brand px-4 py-2" style="background-color: var(--brand); border-color: var(--brand); color: white;"><i class="fas fa-save me-2"></i> Save Elder Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

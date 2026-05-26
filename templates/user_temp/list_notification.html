@@ -1,0 +1,55 @@
+{% extends 'user_temp/user_master.html' %}
+{% load static %}
+
+{% block title %}Notification List{% endblock %}
+{% block heading %}Manage Notification{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card stretch stretch-full border-0 shadow-sm mt-3"> 
+            <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom py-3">
+                <h5 class="card-title mb-0" style="color: var(--brand);">List Notification</h5>
+                <div>
+                    <a href="{% url 'create_notification' %}" class="btn btn-brand" style="background-color: var(--brand); border-color: var(--brand); color: white;">
+                        <i class="fas fa-plus me-2"></i> Create New
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>Message</th>
+                                <th>Is Read</th>
+                                <th>Created At</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in notifications %}
+                            <tr>
+                                <td>{{ item.title }}</td>
+                                <td>{{ item.message }}</td>
+                                <td>{{ item.is_read }}</td>
+                                <td>{{ item.created_at }}</td>
+                                <td class="text-end">
+                                    <a href="{% url 'update_notification' item.id %}" class="btn btn-sm btn-outline-info me-1"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'delete_notification' item.id %}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="100%" class="text-center py-4 text-muted">No Notification records found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>        
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'user_temp/user_master.html' %}
+{% load static %}
+
+{% block title %}Payment Successful{% endblock %}
+{% block heading %}Payment Status{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 4rem auto;
+        text-align: center;
+        background: #fff;
+        border-radius: var(--radius-lg);
+        padding: 3rem;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .success-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, #10b981, #34d399);
+    }
+    
+    .success-icon-wrapper {
+        width: 100px;
+        height: 100px;
+        background: rgba(16, 185, 129, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        animation: pulse 2s infinite;
+    }
+    
+    .success-icon {
+        font-size: 3rem;
+        color: #10b981;
+    }
+    
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+        70% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    
+    .receipt-details {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        text-align: left;
+    }
+    
+    .receipt-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+    
+    .receipt-row.total {
+        border-top: 1px dashed #cbd5e1;
+        padding-top: 0.75rem;
+        margin-top: 0.75rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--brand);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container" data-animate="fadeInUp">
+    <div class="success-icon-wrapper">
+        <i class="fas fa-check success-icon"></i>
+    </div>
+    
+    <h2 style="font-family: 'Playfair Display', serif; color: #10b981;">Payment Successful!</h2>
+    <p class="text-muted mt-2">Thank you for your payment. Your booking has been secured.</p>
+    
+    <div class="receipt-details">
+        <div class="receipt-row">
+            <span class="text-muted">Transaction ID</span>
+            <span class="fw-bold">{{ payment.transaction_id }}</span>
+        </div>
+        <div class="receipt-row">
+            <span class="text-muted">Date & Time</span>
+            <span class="fw-bold">{{ payment.payment_date|date:"d M Y, h:i A" }}</span>
+        </div>
+        <div class="receipt-row">
+            <span class="text-muted">Service Type</span>
+            <span class="fw-bold">{{ payment.booking.service_type }}</span>
+        </div>
+        <div class="receipt-row">
+            <span class="text-muted">Payment Method</span>
+            <span class="fw-bold"><i class="fas fa-credit-card me-1"></i>{{ payment.payment_method }}</span>
+        </div>
+        <div class="receipt-row total">
+            <span>Amount Paid</span>
+            <span>₹{{ payment.amount }}</span>
+        </div>
+    </div>
+    
+    <div class="d-flex gap-3 justify-content-center mt-4">
+        <a href="{% url 'list_payment' %}" class="btn btn-outline-brand px-4 py-2">
+            <i class="fas fa-receipt me-2"></i> View Receipts
+        </a>
+        <a href="{% url 'dashboardindex_view' %}" class="btn btn-brand px-4 py-2">
+            <i class="fas fa-home me-2"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

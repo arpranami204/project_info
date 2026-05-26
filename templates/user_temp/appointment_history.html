@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+{%load static%}
+
+<head>
+
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Appointment History – ElderCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'user_sta/style.css' %}"/>
+  <style>
+    .hist-row { background:#fff;border:1px solid var(--warm-border);border-radius:var(--radius-sm);padding:1.15rem 1.35rem;margin-bottom:0.75rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;transition:var(--transition);position:relative; }
+    .hist-row::before { content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;background:var(--row-clr,var(--warm-border)); }
+    .hist-row:hover { box-shadow:var(--shadow-sm);transform:translateX(4px); }
+    .hist-type-icon { width:46px;height:46px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem; }
+    .hist-main { flex:1;min-width:180px; }
+    .hist-main .hm-title { font-weight:600;font-size:0.875rem;color:var(--text-primary);margin-bottom:0.2rem; }
+    .hist-main .hm-sub { font-size:0.78rem;color:var(--text-muted); }
+    .hist-meta { text-align:right; }
+    .hist-meta .hmt-date { font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.25rem; }
+    .sp-completed { background:rgba(61,155,110,0.12);color:var(--green); }
+    .sp-pending { background:rgba(245,158,11,0.1);color:#f59e0b; }
+    .sp-approved { background:rgba(74,127,212,0.12);color:var(--blue); }
+    .sp-rejected { background:rgba(217,95,95,0.1);color:var(--red); }
+    .amount-tag { font-weight:700;font-size:0.88rem;color:var(--brand); }
+    .ssc { background:#fff;border:1px solid var(--warm-border);border-radius:var(--radius-lg);padding:1.1rem 1.35rem;display:flex;align-items:center;gap:1rem;box-shadow:var(--shadow-sm);transition:var(--transition); }
+    .ssc:hover { box-shadow:var(--shadow-md); }
+    .ssc-icon { width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0; }
+    .ssc .si-num { font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--text-primary);line-height:1;display:block; }
+    .ssc .si-label { font-size:0.72rem;color:var(--text-muted);font-weight:600; }
+  </style>
+</head>
+<body class="dashboard-body">
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><div class="sidebar-brand-icon"><i class="fas fa-heart-pulse"></i></div><span>Elder<em style="font-style:italic;color:var(--brand);">Care</em></span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="{% url 'dashboardindex_view' %}" class="sidebar-link"><i class="fas fa-gauge-high"></i><span>Dashboard</span></a>
+    <a href="{% url 'elderlist_view' %}" class="sidebar-link"><i class="fas fa-id-card"></i><span>Elder Profiles</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-notes-medical"></i><span>Health Records</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-pills"></i><span>Medicines</span></a>
+    <div class="nav-section-label">Services</div>
+    <a href="{% url 'doctorlist_view' %}" class="sidebar-link"><i class="fas fa-user-doctor"></i><span>Doctors</span></a>
+    <a href="{% url 'caretaker_view' %}" class="sidebar-link"><i class="fas fa-hands-holding-heart"></i><span>Caretakers</span></a>
+    <a href="{% url 'services_view' %}" class="sidebar-link"><i class="fas fa-calendar-check"></i><span>Bookings</span></a>
+    <a href="{% url 'appointment_view' %}" class="sidebar-link active"><i class="fas fa-clock-rotate-left"></i><span>History</span></a>
+    <a href="{% url 'list_payment' %}" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+    <div class="nav-section-label">Alerts</div>
+    <a href="{% url 'list_emergencyalert' %}" class="sidebar-link sos-link"><i class="fas fa-bell"></i><span>SOS Alerts</span></a>
+    <a href="{% url 'list_notification' %}" class="sidebar-link"><i class="fas fa-envelope-open-text"></i><span>Notifications</span></a>
+    <div class="nav-section-label">Account</div>
+    <a href="{% url 'profile_view' %}" class="sidebar-link"><i class="fas fa-user-gear"></i><span>Profile</span></a>
+    <a href="{% url 'login_view' %}" class="sidebar-link"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+  </nav>
+</div>
+<div class="main-content" id="mainContent">
+  <div class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    <div class="topbar-title">Appointment History</div>
+    <div class="topbar-right">
+      <button class="sos-trigger" id="sosBtn"><i class="fas fa-bell"></i> SOS</button>
+      <div class="topbar-notif"><i class="fas fa-bell"></i><span class="notif-dot"></span></div>
+      <div class="topbar-user"><img src="https://ui-avatars.com/api/?name={{ request.user }}&background=e8d5b7&color=7a5c3a&size=36&rounded=true" alt=""/><span>{{ request.user }}</span></div>
+    </div>
+  </div>
+  <div class="content-area">
+    <!-- Summary Stats -->
+    <div class="row g-3 mb-4" data-animate="fadeInUp">
+      <div class="col-6 col-md-3"><div class="ssc"><div class="ssc-icon" style="background:var(--brand-light);color:var(--brand)"><i class="fas fa-calendar-check"></i></div><div><span class="si-num">{{ total_bookings }}</span><div class="si-label">Total Bookings</div></div></div></div>
+      <div class="col-6 col-md-3"><div class="ssc"><div class="ssc-icon" style="background:rgba(61,155,110,0.12);color:var(--green)"><i class="fas fa-check-circle"></i></div><div><span class="si-num">{{ completed_count }}</span><div class="si-label">Completed</div></div></div></div>
+      <div class="col-6 col-md-3"><div class="ssc"><div class="ssc-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b"><i class="fas fa-clock"></i></div><div><span class="si-num">{{ pending_count }}</span><div class="si-label">Pending / Active</div></div></div></div>
+      <div class="col-6 col-md-3"><div class="ssc"><div class="ssc-icon" style="background:rgba(74,127,212,0.12);color:var(--blue)"><i class="fas fa-indian-rupee-sign"></i></div><div><span class="si-num">₹{{ total_spent }}</span><div class="si-label">Total Spent</div></div></div></div>
+    </div>
+
+    <div class="dash-card" data-animate="fadeInUp" data-delay="100">
+      <div class="dc-header">
+        <h5><i class="fas fa-clock-rotate-left"></i>All Bookings</h5>
+      </div>
+      <div class="p-3">
+        {% for item in bookings %}
+        <div class="hist-row" 
+             style="--row-clr: {% if item.status == 'Completed' %}var(--green){% elif item.status == 'Rejected' %}var(--red){% elif item.status == 'Approved' %}var(--blue){% else %}#f59e0b{% endif %}">
+          
+          <div class="hist-type-icon" 
+               style="background: {% if 'doctor' in item.service_type|lower %}var(--brand-light);color:var(--brand){% else %}rgba(61,155,110,0.12);color:var(--green){% endif %}">
+            <i class="fas {% if 'doctor' in item.service_type|lower %}fa-user-doctor{% else %}fa-hands-holding-heart{% endif %}"></i>
+          </div>
+          
+          <div class="hist-main">
+            <div class="hm-title">{{ item.service_type }}</div>
+            <div class="hm-sub"><i class="fas fa-info-circle me-1"></i>{{ item.description|truncatechars:100 }}</div> 
+          </div>
+          
+          <div class="hist-meta">
+            <div class="hmt-date"><i class="fas fa-calendar me-1"></i>{{ item.booking_date }} · {{ item.booking_time }}</div>
+            <div class="d-flex align-items-center gap-2 justify-content-end mt-1">
+              <span class="status-pill {% if item.status == 'Completed' %}sp-completed{% elif item.status == 'Pending' %}sp-pending{% elif item.status == 'Approved' %}sp-approved{% else %}sp-rejected{% endif %}">
+                <i class="fas {% if item.status == 'Completed' %}fa-check{% elif item.status == 'Approved' %}fa-thumbs-up{% elif item.status == 'Pending' %}fa-clock{% else %}fa-times{% endif %}"></i>
+                {{ item.status }}
+              </span>
+              
+              {% if item.status == 'Approved' %}
+              <a href="{% url 'checkout_view' item.id %}" class="btn btn-brand btn-sm py-1 px-3" style="font-size:0.75rem;">
+                <i class="fas fa-credit-card me-1"></i>Pay Now
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-5 text-muted">
+          <i class="fas fa-calendar-xmark fa-3x mb-3 opacity-25"></i>
+          <p>No appointment history found.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sos-modal" id="sosModal">
+  <div class="sos-modal-inner"><div class="sos-pulse"></div><i class="fas fa-bell sos-icon"></i><h3>Send Emergency Alert?</h3><p>This will notify the admin immediately.</p>
+    <div class="sos-modal-actions">
+      <button class="btn btn-brand w-100" style="background:var(--red);border-color:var(--red);justify-content:center;" id="confirmSos"><i class="fas fa-bell me-2"></i>Send SOS Alert</button>
+      <button class="btn btn-ghost w-100" id="cancelSos">Cancel</button>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'user_sta/main.js' %}"></script>
+</body>
+</html>

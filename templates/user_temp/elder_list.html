@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+{%load static%}
+
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elder Profiles – ElderCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'user_sta/style.css' %}"/>
+  <style>
+    .elder-card { background:#fff; border:1px solid var(--warm-border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); transition:var(--transition); overflow:hidden; }
+    .elder-card:hover { box-shadow:var(--shadow-md); transform:translateY(-4px); }
+    .elder-card-header { background:linear-gradient(135deg,var(--text-primary) 0%,#3d2e20 100%); padding:1.35rem 1.5rem; position:relative; }
+    .elder-avatar { width:58px;height:58px;border-radius:50%;border:3px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#fff;background:rgba(255,255,255,0.12);}
+    .elder-card-body { padding:1.35rem 1.5rem; }
+    .elder-info-row { display:flex;align-items:center;gap:0.65rem;margin-bottom:0.6rem;font-size:0.82rem;color:var(--text-secondary);}
+    .elder-info-row i { width:16px;color:var(--brand);flex-shrink:0;}
+    .blood-badge { position:absolute;top:1rem;right:1rem;background:rgba(217,95,95,0.9);color:#fff;border-radius:99px;padding:0.2rem 0.7rem;font-size:0.72rem;font-weight:700;}
+  </style>
+</head>
+<body class="dashboard-body">
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><div class="sidebar-brand-icon"><i class="fas fa-heart-pulse"></i></div><span>Elder<em style="font-style:italic;color:var(--brand);">Care</em></span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="{% url 'dashboardindex_view' %}" class="sidebar-link"><i class="fas fa-gauge-high"></i><span>Dashboard</span></a>
+    <a href="{% url 'elderlist_view' %}" class="sidebar-link active"><i class="fas fa-id-card"></i><span>Elder Profiles</span><span class="badge-pill">3</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-notes-medical"></i><span>Health Records</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-pills"></i><span>Medicines</span><span class="badge-pill warn">2</span></a>
+    <div class="nav-section-label">Services</div>
+    <a href="{% url 'doctorlist_view' %}" class="sidebar-link"><i class="fas fa-user-doctor"></i><span>Doctors</span></a>
+    <a href="{% url 'caretaker_view' %}" class="sidebar-link"><i class="fas fa-hands-holding-heart"></i><span>Caretakers</span></a>
+    <a href="{% url 'services_view' %}" class="sidebar-link"><i class="fas fa-calendar-check"></i><span>Bookings</span></a>
+    <a href="{% url 'appointment_view' %}" class="sidebar-link"><i class="fas fa-clock-rotate-left"></i><span>History</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+    <div class="nav-section-label">Alerts</div>
+    <a href="#" class="sidebar-link sos-link"><i class="fas fa-bell"></i><span>SOS Alerts</span><span class="badge-pill danger">!</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-envelope-open-text"></i><span>Notifications</span></a>
+    <div class="nav-section-label">Account</div>
+    <a href="" class="sidebar-link"><i class="fas fa-user-gear"></i><span>Profile</span></a>
+    <a href="{% url 'login_view' %}" class="sidebar-link"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+  </nav>
+</div>
+<div class="main-content" id="mainContent">
+  <div class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    <div class="topbar-title">Elder Profiles</div>
+    <div class="topbar-right">
+      <button class="sos-trigger" id="sosBtn"><i class="fas fa-bell"></i> SOS</button>
+      <div class="topbar-notif"><i class="fas fa-bell"></i><span class="notif-dot"></span></div>
+      <div class="topbar-user"><img src="https://ui-avatars.com/api/?name={{ request.user }}&background=e8d5b7&color=7a5c3a&size=36&rounded=true" alt=""/><span>{{ request.user }}</span></div>
+    </div>
+  </div>
+  <div class="content-area">
+    <div class="welcome-banner d-flex align-items-center justify-content-between flex-wrap gap-3" data-animate="fadeInUp">
+      <div>
+        <h4 style="font-family:'Playfair Display',serif;margin-bottom:0.25rem;">Elder Profiles</h4>
+        <p style="color:rgba(255,255,255,0.65);font-size:0.875rem;margin:0;">Manage care profiles for your elderly family members</p>
+      </div>
+      <button class="btn btn-brand" onclick="openModal('addElderModal')" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);"><i class="fas fa-plus me-2"></i>Add Elder Profile</button>
+    </div>
+
+    <div class="row g-4 mt-1">
+      <!-- Elder 1 -->
+      <div class="col-md-6 col-xl-4" data-animate="fadeInUp" data-delay="0">
+        <div class="elder-card">
+          <div class="elder-card-header">
+            <span class="blood-badge">B+</span>
+            <div class="d-flex align-items-center gap-3">
+              <div class="elder-avatar">R</div>
+              <div>
+                <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;">Ramesh Sharma</div>
+                <div style="color:rgba(255,255,255,0.55);font-size:0.75rem;">Father · 78 years old</div>
+              </div>
+            </div>
+          </div>
+          <div class="elder-card-body">
+            <div class="elder-info-row"><i class="fas fa-venus-mars"></i> Male</div>
+            <div class="elder-info-row"><i class="fas fa-heart-pulse"></i> Hypertension, Diabetes</div>
+            <div class="elder-info-row"><i class="fas fa-phone"></i> +91 98700 11111 (Emergency)</div>
+            <div class="elder-info-row"><i class="fas fa-calendar"></i> Added: Jan 15, 2024</div>
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-outline-brand btn-sm flex-fill"><i class="fas fa-eye me-1"></i>View</button>
+              <button class="btn btn-ghost btn-sm flex-fill"><i class="fas fa-pen me-1"></i>Edit</button>
+              <button class="btn-icon-sm" style="background:rgba(217,95,95,0.1);color:var(--red);width:34px;height:34px;"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Elder 2 -->
+      <div class="col-md-6 col-xl-4" data-animate="fadeInUp" data-delay="100">
+        <div class="elder-card">
+          <div class="elder-card-header">
+            <span class="blood-badge">O+</span>
+            <div class="d-flex align-items-center gap-3">
+              <div class="elder-avatar">S</div>
+              <div>
+                <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;">Sunita Sharma</div>
+                <div style="color:rgba(255,255,255,0.55);font-size:0.75rem;">Mother · 72 years old</div>
+              </div>
+            </div>
+          </div>
+          <div class="elder-card-body">
+            <div class="elder-info-row"><i class="fas fa-venus-mars"></i> Female</div>
+            <div class="elder-info-row"><i class="fas fa-heart-pulse"></i> Arthritis</div>
+            <div class="elder-info-row"><i class="fas fa-phone"></i> +91 98700 22222 (Emergency)</div>
+            <div class="elder-info-row"><i class="fas fa-calendar"></i> Added: Feb 2, 2024</div>
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-outline-brand btn-sm flex-fill"><i class="fas fa-eye me-1"></i>View</button>
+              <button class="btn btn-ghost btn-sm flex-fill"><i class="fas fa-pen me-1"></i>Edit</button>
+              <button class="btn-icon-sm" style="background:rgba(217,95,95,0.1);color:var(--red);width:34px;height:34px;"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Elder 3 -->
+      <div class="col-md-6 col-xl-4" data-animate="fadeInUp" data-delay="200">
+        <div class="elder-card">
+          <div class="elder-card-header">
+            <span class="blood-badge">A+</span>
+            <div class="d-flex align-items-center gap-3">
+              <div class="elder-avatar">K</div>
+              <div>
+                <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;">Kantaben Patel</div>
+                <div style="color:rgba(255,255,255,0.55);font-size:0.75rem;">Grandmother · 85 years old</div>
+              </div>
+            </div>
+          </div>
+          <div class="elder-card-body">
+            <div class="elder-info-row"><i class="fas fa-venus-mars"></i> Female</div>
+            <div class="elder-info-row"><i class="fas fa-heart-pulse"></i> Dementia, Heart Condition</div>
+            <div class="elder-info-row"><i class="fas fa-phone"></i> +91 98700 33333 (Emergency)</div>
+            <div class="elder-info-row"><i class="fas fa-calendar"></i> Added: Mar 10, 2024</div>
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-outline-brand btn-sm flex-fill"><i class="fas fa-eye me-1"></i>View</button>
+              <button class="btn btn-ghost btn-sm flex-fill"><i class="fas fa-pen me-1"></i>Edit</button>
+              <button class="btn-icon-sm" style="background:rgba(217,95,95,0.1);color:var(--red);width:34px;height:34px;"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add New Card -->
+      <div class="col-md-6 col-xl-4" data-animate="fadeInUp" data-delay="300">
+        <div class="elder-card" style="border:2px dashed var(--warm-border);box-shadow:none;cursor:pointer;min-height:220px;display:flex;align-items:center;justify-content:center;background:transparent;" onclick="openModal('addElderModal')">
+          <div class="text-center p-3">
+            <div style="width:56px;height:56px;border-radius:50%;background:var(--brand-light);display:flex;align-items:center;justify-content:center;margin:0 auto 0.85rem;font-size:1.5rem;color:var(--brand);"><i class="fas fa-plus"></i></div>
+            <div style="font-weight:700;font-size:0.9rem;color:var(--text-secondary);">Add Elder Profile</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem;">Click to add a new profile</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Elder Modal -->
+<div class="modal-backdrop-custom" id="addElderModal">
+  <div class="modal-box">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h5 style="font-family:'Playfair Display',serif;margin:0;"><i class="fas fa-id-card me-2" style="color:var(--brand)"></i>Add Elder Profile</h5>
+      <button class="btn-icon-sm view" onclick="closeModal('addElderModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-6"><label class="form-label-custom">Full Name *</label><input type="text" class="form-ctrl" placeholder="e.g. Ramesh Kumar"></div>
+      <div class="col-md-6"><label class="form-label-custom">Age *</label><input type="number" class="form-ctrl" placeholder="e.g. 72" min="50" max="120"></div>
+      <div class="col-md-6"><label class="form-label-custom">Gender *</label><select class="form-ctrl"><option>Male</option><option>Female</option><option>Other</option></select></div>
+      <div class="col-md-6"><label class="form-label-custom">Blood Group</label><select class="form-ctrl"><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+      <div class="col-12"><label class="form-label-custom">Medical Conditions</label><input type="text" class="form-ctrl" placeholder="e.g. Diabetes, Hypertension"></div>
+      <div class="col-md-6"><label class="form-label-custom">Emergency Contact</label><input type="tel" class="form-ctrl" placeholder="+91 XXXXX XXXXX"></div>
+      <div class="col-md-6"><label class="form-label-custom">Relation</label><select class="form-ctrl"><option>Father</option><option>Mother</option><option>Grandfather</option><option>Grandmother</option><option>Other</option></select></div>
+      <div class="col-12 d-flex gap-2 justify-content-end pt-1">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('addElderModal')">Cancel</button>
+        <button type="button" class="btn btn-brand"><i class="fas fa-save me-1"></i>Save Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOS MODAL -->
+<div class="sos-modal" id="sosModal">
+  <div class="sos-modal-inner"><div class="sos-pulse"></div><i class="fas fa-bell sos-icon"></i><h3>Send Emergency Alert?</h3><p>This will notify the admin immediately.</p>
+    <div class="sos-modal-actions">
+      <button class="btn btn-brand w-100" style="background:var(--red);border-color:var(--red);justify-content:center;" id="confirmSos"><i class="fas fa-bell me-2"></i>Send SOS Alert</button>
+      <button class="btn btn-ghost w-100" id="cancelSos">Cancel</button>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'user_sta/main.js' %}"></script>
+</body>
+</html>

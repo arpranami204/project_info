@@ -1,0 +1,82 @@
+{% extends 'admin_temp/master.html' %}
+{% load static %}
+{% block content %}
+
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Care</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li> </li>
+                    <li class="breadcrumb-item">List</li>
+                </ul>
+            </div>
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-xxl-11">
+                    <div class="card stretch stretch-full">
+                        <div class="card-header">
+                            <h5 class="card-title">List Bookings</h5>
+                        </div>
+                        <div class="card-body custom-card-action p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-10">
+                                    <thead>
+                                        <tr class="border-b">
+                                            <th>User</th>
+                                            <th>Service Type</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for t in bookings %}
+                                        <tr>
+                                            <td>{{ t.user.username }}</td>
+                                            <td>{{ t.service_type }}</td>
+                                            <td>{{ t.booking_date }}</td>
+                                            <td>{{ t.booking_time }}</td>
+                                            <td>{{ t.description }}</td>
+                                            <td>
+                                                {% if t.status == 'Pending' %}
+                                                <span class="badge bg-soft-warning text-warning">{{ t.status }}</span>
+                                                {% elif t.status == 'Approved' %}
+                                                <span class="badge bg-soft-success text-success">{{ t.status }}</span>
+                                                {% elif t.status == 'Rejected' %}
+                                                <span class="badge bg-soft-danger text-danger">{{ t.status }}</span>
+                                                {% else %}
+                                                <span class="badge bg-soft-info text-info">{{ t.status }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-end">
+                                                {% if t.status == 'Pending' %}
+                                                <a href="{% url 'approve_booking' t.id %}"
+                                                    class="btn btn-sm btn-success">Approve</a>
+                                                <a href="{% url 'reject_booking' t.id %}"
+                                                    class="btn btn-sm btn-danger">Reject</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{%load static%}     
+
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us – ElderCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'user_sta/style.css' %}"/>
+  <style>
+    .about-hero { background:linear-gradient(135deg,var(--text-primary) 0%,#3d2e20 60%,#5a3e28 100%);padding:6rem 0 3.5rem;position:relative;overflow:hidden; }
+    .about-hero::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(193,122,58,0.2) 0%,transparent 60%); }
+    .about-hero::after { content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.05) 1px,transparent 1px);background-size:36px 36px; }
+    .mission-card { background:#fff;border:1px solid var(--warm-border);border-radius:var(--radius-lg);padding:2rem;box-shadow:var(--shadow-sm);transition:var(--transition);height:100%; }
+    .mission-card:hover { box-shadow:var(--shadow-lg);transform:translateY(-5px); }
+    .mission-icon { width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1.35rem; }
+    .team-card { background:#fff;border:1px solid var(--warm-border);border-radius:var(--radius-lg);padding:1.85rem;text-align:center;box-shadow:var(--shadow-sm);transition:var(--transition); }
+    .team-card:hover { box-shadow:var(--shadow-lg);transform:translateY(-5px); }
+    .team-avatar { width:76px;height:76px;border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:700;font-family:'Playfair Display',serif;border:3px solid var(--warm-border); }
+    .stat-highlight { background:linear-gradient(135deg,var(--brand) 0%,var(--warm-dark) 100%);border-radius:var(--radius-lg);padding:2.5rem 2rem;color:#fff;text-align:center;box-shadow:var(--shadow-md); }
+    .stat-highlight .sh-num { font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;display:block;line-height:1; }
+    .stat-highlight .sh-label { font-size:0.85rem;opacity:0.8;margin-top:0.4rem; }
+    .timeline-item { display:flex;gap:1.5rem;margin-bottom:2.25rem; }
+    .tl-dot { width:44px;height:44px;border-radius:50%;flex-shrink:0;background:var(--brand-light);border:2px solid var(--brand);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:0.9rem; }
+    .page-section { padding:4.5rem 0; }
+    .section-badge { display:inline-block;background:var(--brand-light);color:var(--brand);border-radius:99px;padding:0.32rem 0.95rem;font-size:0.78rem;font-weight:700;margin-bottom:0.85rem; }
+    .public-nav { background:#fff;border-bottom:1px solid var(--warm-border);padding:0.75rem 0;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm); }
+  </style>
+</head>
+<body>
+<nav class="public-nav">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a href="{% url 'indexuser_view' %}" class="d-flex align-items-center gap-2 text-decoration-none" style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--text-primary);">
+      <span class="brand-icon" style="width:36px;height:36px;background:linear-gradient(135deg,var(--brand),var(--warm-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.9rem;"><i class="fas fa-heart-pulse"></i></span>
+      Elder<em>Care</em>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#pubNav" style="padding:0.3rem;">
+      <i class="fas fa-bars" style="color:var(--text-primary)"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="pubNav" style="flex-grow:0;">
+      <ul class="navbar-nav flex-row gap-3 align-items-center">
+        <li><a href="{% url 'indexuser_view' %}" class="nav-link" style="color:var(--text-secondary);font-size:0.875rem;">Home</a></li>
+        <li><a href="{% url 'about_view' %}" class="nav-link" style="color:var(--brand);font-weight:600;font-size:0.875rem;">About</a></li>
+        <li><a href="{% url 'contact_view' %}" class="nav-link" style="color:var(--text-secondary);font-size:0.875rem;">Contact</a></li>
+        <li><a class="btn btn-outline-brand btn-sm" href="{% url 'login_view' %}">Login</a></li>
+        <li><a class="btn btn-brand btn-sm" href="{% url 'register_view' %}">Get Started</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="about-hero">
+  <div class="container position-relative">
+    <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:99px;padding:0.38rem 0.95rem;color:var(--warm-mid);font-size:0.78rem;font-weight:600;margin-bottom:1.25rem;">
+      <i class="fas fa-heart-pulse"></i> Our Story
+    </div>
+    <h1 style="color:#fff;font-size:clamp(2.2rem,5vw,3.5rem);margin-bottom:0.85rem;">Caring for Those<br><em style="color:var(--warm-mid);">Who Built Our World</em></h1>
+    <p style="color:rgba(255,255,255,0.65);font-size:1.05rem;max-width:540px;line-height:1.75;">ElderCare was founded on the belief that every elderly individual deserves dignity, safety, and professional care — accessible to every family across India.</p>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="page-section" style="background:var(--warm-cream);">
+  <div class="container">
+    <div class="text-center mb-5" data-animate="fadeInUp">
+      <span class="section-badge">Our Mission</span>
+      <h2 style="font-size:2.2rem;">Why ElderCare Exists</h2>
+      <p style="color:var(--text-secondary);max-width:600px;margin:0.75rem auto 0;line-height:1.7;">We bridge the gap between elderly individuals, their families, and professional care providers through a secure, compassionate digital platform.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4" data-animate="fadeInUp" data-delay="0">
+        <div class="mission-card">
+          <div class="mission-icon" style="background:rgba(193,122,58,0.12);color:var(--brand)"><i class="fas fa-shield-heart"></i></div>
+          <h5 style="font-family:'Playfair Display',serif;margin-bottom:0.75rem;">Safety First</h5>
+          <p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Dedicated SOS emergency alert system ensures help is just one tap away, 24 hours a day, 7 days a week.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-animate="fadeInUp" data-delay="100">
+        <div class="mission-card">
+          <div class="mission-icon" style="background:rgba(61,155,110,0.12);color:var(--green)"><i class="fas fa-notes-medical"></i></div>
+          <h5 style="font-family:'Playfair Display',serif;margin-bottom:0.75rem;">Health Tracking</h5>
+          <p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Centralized health records, medicine schedules, and vital monitoring keep families informed and care providers prepared.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-animate="fadeInUp" data-delay="200">
+        <div class="mission-card">
+          <div class="mission-icon" style="background:rgba(74,127,212,0.12);color:var(--blue)"><i class="fas fa-calendar-check"></i></div>
+          <h5 style="font-family:'Playfair Display',serif;margin-bottom:0.75rem;">Seamless Bookings</h5>
+          <p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Book doctors and caretakers with transparent approval workflows, clear pricing, and secure payment tracking.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="page-section" style="background:var(--warm-light);">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-6 col-md-3" data-animate="fadeInUp"><div class="stat-highlight"><span class="sh-num" data-count="500">0</span>+<div class="sh-label">Elderly Profiles Managed</div></div></div>
+      <div class="col-6 col-md-3" data-animate="fadeInUp" data-delay="100"><div class="stat-highlight"><span class="sh-num" data-count="120">0</span>+<div class="sh-label">Verified Doctors</div></div></div>
+      <div class="col-6 col-md-3" data-animate="fadeInUp" data-delay="200"><div class="stat-highlight"><span class="sh-num" data-count="80">0</span>+<div class="sh-label">Expert Caretakers</div></div></div>
+      <div class="col-6 col-md-3" data-animate="fadeInUp" data-delay="300"><div class="stat-highlight"><span class="sh-num">99.9</span>%<div class="sh-label">Uptime & Reliability</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="page-section" style="background:var(--warm-cream);">
+  <div class="container">
+    <div class="row align-items-start">
+      <div class="col-lg-5 mb-5 mb-lg-0" data-animate="fadeInLeft">
+        <span class="section-badge">Our Journey</span>
+        <h2 style="font-size:2.1rem;margin-bottom:1rem;">Building a Platform<br>You Can Trust</h2>
+        <p style="color:var(--text-secondary);line-height:1.8;">From a simple idea to a comprehensive care management system — ElderCare has grown to serve hundreds of families across India.</p>
+      </div>
+      <div class="col-lg-7" data-animate="fadeInRight">
+        <div class="timeline-item"><div class="tl-dot"><i class="fas fa-seedling"></i></div><div><h6 style="font-family:'Playfair Display',serif;">2022 — The Idea</h6><p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Inspired by the challenges families face managing elderly care remotely, the concept for ElderCare was born.</p></div></div>
+        <div class="timeline-item"><div class="tl-dot"><i class="fas fa-code"></i></div><div><h6 style="font-family:'Playfair Display',serif;">2023 — Development</h6><p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Built on Django's MVT architecture with role-based access, health tracking, and emergency alert modules.</p></div></div>
+        <div class="timeline-item"><div class="tl-dot"><i class="fas fa-rocket"></i></div><div><h6 style="font-family:'Playfair Display',serif;">2024 — Launch</h6><p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Platform launched with doctor and caretaker booking, payment management, and SOS alert system.</p></div></div>
+        <div class="timeline-item"><div class="tl-dot"><i class="fas fa-star"></i></div><div><h6 style="font-family:'Playfair Display',serif;">2025 — Growth</h6><p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Expanded to 500+ users with AI-health analysis and mobile app version in development.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="page-section" style="background:var(--warm-light);">
+  <div class="container">
+    <div class="text-center mb-5" data-animate="fadeInUp"><span class="section-badge">The Team</span><h2 style="font-size:2rem;">Meet Our Core Team</h2></div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-md-3" data-animate="fadeInUp"><div class="team-card"><div class="team-avatar" style="background:var(--brand-light);color:var(--brand);">A</div><h6 style="font-family:'Playfair Display',serif;">Aryan Pranami</h6><small style="color:var(--text-muted);">Founder & Lead Developer</small><div class="mt-2"><span style="font-size:0.72rem;background:var(--brand-light);color:var(--brand);border-radius:99px;padding:0.2rem 0.65rem;">Django</span></div></div></div>
+      <div class="col-6 col-md-3" data-animate="fadeInUp" data-delay="100"><div class="team-card"><div class="team-avatar" style="background:rgba(61,155,110,0.12);color:var(--green);">M</div><h6 style="font-family:'Playfair Display',serif;">Man Patel</h6><small style="color:var(--text-muted);">UI/UX Designer</small><div class="mt-2"><span style="font-size:0.72rem;background:rgba(61,155,110,0.12);color:var(--green);border-radius:99px;padding:0.2rem 0.65rem;">Design</span></div></div></div>
+      <div class="col-6 col-md-3" data-animate="fadeInUp" data-delay="200"><div class="team-card"><div class="team-avatar" style="background:rgba(74,127,212,0.12);color:var(--blue);">A</div><h6 style="font-family:'Playfair Display',serif;">Ashish Patel</h6><small style="color:var(--text-muted);">Backend Engineer</small><div class="mt-2"><span style="font-size:0.72rem;background:rgba(74,127,212,0.12);color:var(--blue);border-radius:99px;padding:0.2rem 0.65rem;">Python</span></div></div></div>
+      <div class="col-6 col-md-3" data-animate="fadeInUp" data-delay="300"><div class="team-card"><div class="team-avatar" style="background:rgba(116, 74, 215, 0.192);color:var(--purple);">Z</div><h6 style="font-family:'Playfair Display',serif;">Dr.Zaid Vhora</h6><small style="color:var(--text-muted);">Health Specialist</small><div class="mt-2"><span style="font-size:0.72rem;background:rgba(139,92,246,0.12);color:var(--purple);border-radius:99px;padding:0.2rem 0.65rem;">Healthcare</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="page-section" style="background:var(--warm-cream);">
+  <div class="container">
+    <div class="cta-box text-center" data-animate="fadeInUp">
+      <div class="cta-glow"></div>
+      <h3 style="font-size:2rem;margin-bottom:0.75rem;color:#fff;">Ready to Get Started?</h3>
+      <p style="opacity:0.7;margin-bottom:1.75rem;color:rgba(255,255,255,0.8);">Join hundreds of families who trust ElderCare for their loved ones.</p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap position-relative">
+        <a href="{% url 'register_view' %}" class="btn btn-brand"><i class="fas fa-user-plus me-2"></i>Create Free Account</a>
+        <a href="{% url 'contact_view' %}" class="btn btn-ghost" style="color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.3);">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--text-primary);color:rgba(255,255,255,0.55);padding:1.75rem 0;text-align:center;font-size:0.82rem;">
+  © 2025 ElderCare · Built with <i class="fas fa-heart" style="color:var(--brand)"></i> for elderly well-being · Made in India 🇮🇳
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'user_sta/main.js' %}"></script>
+</body>
+</html>

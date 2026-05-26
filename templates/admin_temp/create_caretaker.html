@@ -1,0 +1,136 @@
+{% extends 'admin_temp/master.html' %}
+{% load static %}
+{% block content %}
+
+    <!--! ================================================================ !-->
+    <!--! [Start] Main Content !-->
+    <!--! =====================================  =========================== !-->
+    <main class="nxl-container apps-container">
+        <div class="nxl-content without-header nxl-full-content">
+            <!-- [ Main Content ] start -->
+            <div class="main-content d-flex">
+                <!-- [ Main Area  ] start -->
+                <div class="content-area" data-scrollbar-target="#psScrollbarInit">
+                     <div class="content-area-header bg-white sticky-top">
+                        <div class="page-header-left">
+                            <a href="javascript:void(0);" class="app-sidebar-open-trigger me-2">
+                                <i class="feather-align-left fs-24"></i>
+                            </a>
+                        </div>
+                        <div class="page-header-right ms-auto">
+                            <div class="d-flex align-items-center gap-3 page-header-right-items-wrapper">
+                                <a href="javascript:void(0);" class="text-danger">Cancel</a>
+                                <a href="javascript:void(0);" class="btn btn-primary successAlertMessage">
+                                    <i class="feather-save me-2"></i>
+                                    <span>Save Changes</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-area-body">
+                        <div class="card mb-0">
+                            <div class="card-body">
+
+                                <!-- ================= IMAGE UPLOAD ================= -->
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="mb-5">
+                                        <h5 class="card-title">Create Caretaker</h5>
+                                        {% if form.errors %}
+                                            <div class="alert alert-danger">
+                                                {{ form.non_field_errors }}
+                                                {{ form.errors }}
+                                            </div>
+                                        {% endif %}
+                                        <!-- class="wd-100 ht-100 position-relative overflow-hidden border border-gray-2 rounded"> -->
+                                        {% comment %}
+                                         <img src="{% static 'admin_sta/assets/images/logo-abbr.png' %}"
+                                            class="upload-pic img-fluid rounded h-100 w-100" alt="">
+                                            <div
+                                             class="position-absolute start-50 top-50 translate-middle h-100 w-100 hstack align-items-center justify-content-center c-pointer upload-button">
+                                             <i class="feather feather-camera"></i> 
+                                            </div>
+                                            <input class="file-upload" type="file" accept="image/*">
+                                        </div> {% endcomment %}
+                                    </div>
+
+                                 <!-- ================= BASIC INPUTS ================= -->
+                                    
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Full Name</label>
+                                         <input type="text"  name="full_name" class="form-control"> 
+                                         {% comment %} placeholder="description" {% endcomment %}
+                                    </div>
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Gender</label>
+                                         <input type="text"  name="gender" class="form-control"> 
+                                         {% comment %} placeholder="description" {% endcomment %}
+                                    </div>
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Phone Number</label>
+                                         <input type="number"  name="phone_number" class="form-control"> 
+                                         {% comment %} placeholder="description" {% endcomment %}
+                                    </div>
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Service Charge</label>
+                                         <input type="text"  name="service_charge" class="form-control"> 
+                                         {% comment %} placeholder="description" {% endcomment %}
+                                    </div>
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Experience Years</label>
+                                         <input type="text"  name="experience_years" class="form-control"> 
+                                         {% comment %} placeholder="description" {% endcomment %}
+                                    </div>
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Address</label>
+                                         <input type="text"  name="address" class="form-control"> 
+                                         {% comment %} placeholder="description" {% endcomment %}
+                                    </div>
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Availability Status</label>
+                                         <input type="text"  name="availability_status" class="form-control"> 
+                                         {% comment %} placeholder="description" {% endcomment %}
+                                    </div>
+
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Updated At</label>
+                                         <input type="date"  name="updated_at" class="form-control"> 
+                                         {% comment %} placeholder="description" {% endcomment %}
+                                    </div>
+
+                                    
+                                
+
+                                 <!-- ================= DATE ================= -->
+
+                                    <div class="mb-1">
+                                         <label class="form-label">Image</label>
+                                         <input type="file" name="image" class="form-control">
+                                    </div>
+
+                                  
+                                    <div class="mb-1">
+                                         <label class="form-label">Created At</label>
+                                         <input type="date" name="created_at" class="form-control">
+                                    </div>
+
+                                 <!-- ================= SUBMIT BUTTON ================= -->
+                                    <div class="mb-0 text-end">
+                                        <button type="reset" class="btn btn-light me-2">Reset</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+{% endblock %}

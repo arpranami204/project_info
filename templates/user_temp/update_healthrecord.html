@@ -1,0 +1,72 @@
+{% extends 'user_temp/user_master.html' %}
+{% load static %}
+
+{% block title %}Update Health Record{% endblock %}
+{% block heading %}Update Health Record{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="dash-card my-4">
+            <div class="dc-header border-bottom">
+                <h5><i class="fas fa-edit me-2 text-brand"></i>Update Vital Signs</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" class="row g-3">
+                    {% csrf_token %}
+                    
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Elder Profile</label>
+                        {{ form.elder }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Blood Pressure</label>
+                        {{ form.blood_pressure }}
+                        <div class="form-text small text-muted">Example: 120/80</div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Sugar Level (mg/dL)</label>
+                        {{ form.sugar_level }}
+                        <div class="form-text small text-muted">Example: 95 mg/dL</div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Weight (kg)</label>
+                        {{ form.weight }}
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Heart Rate (bpm)</label>
+                        {{ form.heart_rate }}
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Temperature (°C)</label>
+                        {{ form.temperature }}
+                    </div>
+                    
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Recorded Date & Time</label>
+                        {{ form.recorded_date }}
+                    </div>
+                    
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Additional Notes</label>
+                        {{ form.notes }}
+                    </div>
+                    
+                    <div class="col-12 text-end mt-4">
+                        <hr>
+                        <a href="{% url 'list_healthrecord' %}" class="btn btn-ghost px-4">Cancel</a>
+                        <button type="submit" class="btn btn-brand px-4 py-2">
+                            <i class="fas fa-save me-2"></i>Update Vitals
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+{%load static%}
+
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Caretaker – ElderCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'user_sta/style.css' %}"/>
+  <style>
+    .form-card { background:#fff;border:1px solid var(--warm-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);padding:2rem; }
+    .ct-preview { background:linear-gradient(145deg,#1e4d35 0%,#0f2e1f 100%);border-radius:var(--radius-lg);padding:1.85rem;color:#fff;position:sticky;top:1rem; }
+    .ct-prev-avatar { width:68px;height:68px;border-radius:20px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;margin-bottom:1rem; }
+    .service-option { border:2px solid var(--warm-border);border-radius:var(--radius-sm);padding:1rem;cursor:pointer;transition:var(--transition);background:#fff;text-align:center; }
+    .service-option:hover,.service-option.selected { border-color:var(--brand);background:var(--brand-light); }
+    .service-option .so-icon { font-size:1.4rem;color:var(--brand);margin-bottom:0.4rem; }
+    .service-option .so-title { font-size:0.82rem;font-weight:700;color:var(--text-primary); }
+    .service-option .so-sub { font-size:0.7rem;color:var(--text-muted); }
+    .cost-summary { background:var(--warm-light);border-radius:var(--radius-sm);padding:1.1rem;border:1px solid var(--warm-border); }
+    .cs-row { display:flex;justify-content:space-between;padding:0.55rem 0;border-bottom:1px solid var(--warm-border);font-size:0.85rem; }
+    .cs-row:last-child { border-bottom:none; }
+  </style>
+</head>
+<body class="dashboard-body">
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><div class="sidebar-brand-icon"><i class="fas fa-heart-pulse"></i></div><span>Elder<em style="font-style:italic;color:var(--brand);">Care</em></span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="{% url 'dashboardindex_view' %}" class="sidebar-link"><i class="fas fa-gauge-high"></i><span>Dashboard</span></a>
+    <a href="{% url 'elderlist_view' %}" class="sidebar-link"><i class="fas fa-id-card"></i><span>Elder Profiles</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-notes-medical"></i><span>Health Records</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-pills"></i><span>Medicines</span></a>
+    <div class="nav-section-label">Services</div>
+    <a href="{% url 'doctorlist_view' }" class="sidebar-link"><i class="fas fa-user-doctor"></i><span>Doctors</span></a>
+    <a href="{% url 'caretaker_view' %}" class="sidebar-link active"><i class="fas fa-hands-holding-heart"></i><span>Caretakers</span></a>
+    <a href="{% url 'services_view' %}" class="sidebar-link"><i class="fas fa-calendar-check"></i><span>Bookings</span></a>
+    <a href="{% url 'appointment_view' %}" class="sidebar-link"><i class="fas fa-clock-rotate-left"></i><span>History</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+    <div class="nav-section-label">Alerts</div>
+    <a href="#" class="sidebar-link sos-link"><i class="fas fa-bell"></i><span>SOS Alerts</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-envelope-open-text"></i><span>Notifications</span></a>
+    <div class="nav-section-label">Account</div>
+    <a href="{% url 'profile_view' %}" class="sidebar-link"><i class="fas fa-user-gear"></i><span>Profile</span></a>
+    <a href="{% url 'login_view' %}" class="sidebar-link"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+  </nav>
+</div>
+<div class="main-content" id="mainContent">
+  <div class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    <div class="topbar-title">Request Caretaker</div>
+    <div class="topbar-right">
+      <button class="sos-trigger" id="sosBtn"><i class="fas fa-bell"></i> SOS</button>
+      <div class="topbar-notif"><i class="fas fa-bell"></i><span class="notif-dot"></span></div>
+      <div class="topbar-user"><img src="https://ui-avatars.com/api/?name=Raman+Sharma&background=e8d5b7&color=7a5c3a&size=36&rounded=true" alt=""/><span>Raman Sharma</span></div>
+    </div>
+  </div>
+  <div class="content-area">
+    <div class="mb-4" data-animate="fadeInUp">
+      <a href="{% url 'caretaker_view' %}" class="btn btn-ghost btn-sm"><i class="fas fa-arrow-left me-2"></i>Back to Caretakers</a>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-8" data-animate="fadeInLeft">
+        <div class="form-card">
+          <h5 style="font-family:'Playfair Display',serif;margin-bottom:1.5rem;"><i class="fas fa-hands-holding-heart me-2" style="color:var(--brand)"></i>Caretaker Service Request</h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label-custom">Select Elder Profile *</label>
+              <select class="form-ctrl">
+                <option value="">Choose an elder</option>
+                <option>Ramesh Sharma (Father, 78)</option>
+                <option>Sunita Sharma (Mother, 72)</option>
+                <option>Kantaben Patel (Grandmother, 85)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom">Service Start Date *</label>
+              <input type="date" class="form-ctrl" id="startDate"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom">Service End Date *</label>
+              <input type="date" class="form-ctrl" id="endDate"/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom">Timing Preference</label>
+              <select class="form-ctrl">
+                <option>Full Day (8 hrs)</option>
+                <option>Morning Only (6am–2pm)</option>
+                <option>Evening Only (2pm–10pm)</option>
+                <option>Night Shift (10pm–6am)</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label-custom">Service Type *</label>
+              <div class="row g-2 mt-1">
+                <div class="col-6 col-md-3"><div class="service-option selected" onclick="toggleService(this)"><div class="so-icon"><i class="fas fa-house-medical"></i></div><div class="so-title">Home Care</div><div class="so-sub">Daily assistance</div></div></div>
+                <div class="col-6 col-md-3"><div class="service-option" onclick="toggleService(this)"><div class="so-icon"><i class="fas fa-pills"></i></div><div class="so-title">Medicine</div><div class="so-sub">Medication help</div></div></div>
+                <div class="col-6 col-md-3"><div class="service-option" onclick="toggleService(this)"><div class="so-icon"><i class="fas fa-wheelchair"></i></div><div class="so-title">Mobility</div><div class="so-sub">Movement support</div></div></div>
+                <div class="col-6 col-md-3"><div class="service-option" onclick="toggleService(this)"><div class="so-icon"><i class="fas fa-utensils"></i></div><div class="so-title">Meal Prep</div><div class="so-sub">Food preparation</div></div></div>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label-custom">Special Requirements</label>
+              <textarea class="form-ctrl" rows="3" placeholder="Any special needs, medical conditions, instructions for the caretaker..."></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label-custom">Address of Service</label>
+              <input type="text" class="form-ctrl" placeholder="Full address where service is needed" value="12, Park Street, Ahmedabad, Gujarat"/>
+            </div>
+            <div class="col-12">
+              <div class="cost-summary">
+                <div style="font-size:0.75rem;font-weight:700;color:var(--text-secondary);margin-bottom:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">Cost Estimate</div>
+                <div class="cs-row"><span style="color:var(--text-muted)">Daily Rate</span><span style="font-weight:700">₹400 / day</span></div>
+                <div class="cs-row"><span style="color:var(--text-muted)">Duration</span><span style="font-weight:700" id="durationText">Select dates to calculate</span></div>
+                <div class="cs-row"><span style="color:var(--text-muted);font-weight:700">Estimated Total</span><span style="color:var(--brand);font-weight:700;font-size:1.05rem;" id="totalText">—</span></div>
+              </div>
+            </div>
+            <div class="col-12 d-flex gap-2 justify-content-end">
+              <a href="{% url 'caretaker_view' %}" class="btn btn-ghost">Cancel</a>
+              <button type="button" class="btn btn-brand px-4"><i class="fas fa-paper-plane me-2"></i>Submit Request</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Caretaker Preview -->
+      <div class="col-lg-4" data-animate="fadeInRight">
+        <div class="ct-preview">
+          <div class="ct-prev-avatar">A</div>
+          <div style="font-size:0.7rem;opacity:0.55;margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:0.1em;">Selected Caretaker</div>
+          <h5 style="font-family:'Playfair Display',serif;margin-bottom:0.3rem;">Anita Devi</h5>
+          <div style="display:inline-block;background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);border-radius:99px;padding:0.2rem 0.65rem;font-size:0.7rem;font-weight:700;margin-bottom:1rem;">Female · Home Care</div>
+          <div style="font-size:0.8rem;opacity:0.75;margin-bottom:0.4rem;"><i class="fas fa-star" style="color:#f59e0b"></i><i class="fas fa-star" style="color:#f59e0b"></i><i class="fas fa-star" style="color:#f59e0b"></i><i class="fas fa-star" style="color:#f59e0b"></i><i class="fas fa-star-half-alt" style="color:#f59e0b"></i> 4.8 (42 reviews)</div>
+          <div style="font-size:0.8rem;opacity:0.75;margin-bottom:0.4rem;"><i class="fas fa-briefcase me-1"></i>7 years experience</div>
+          <div style="font-size:0.8rem;opacity:0.75;margin-bottom:1rem;"><i class="fas fa-location-dot me-1"></i>Navrangpura, Ahmedabad</div>
+          <div style="border-top:1px solid rgba(255,255,255,0.12);padding-top:1rem;">
+            <div style="font-size:0.7rem;opacity:0.55;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.1em;">Service Charge</div>
+            <div style="font-size:1.6rem;font-family:'Playfair Display',serif;font-weight:700;">₹400 <span style="font-size:0.8rem;opacity:0.6;font-family:'DM Sans',sans-serif;font-weight:400;">/ day</span></div>
+          </div>
+          <div style="background:rgba(110,231,183,0.15);border-radius:var(--radius-sm);padding:0.55rem 0.85rem;margin-top:1rem;font-size:0.75rem;color:#6ee7b7;display:flex;align-items:center;gap:0.5rem;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#6ee7b7;box-shadow:0 0 6px #6ee7b7"></div> Available for Booking
+          </div>
+          <div style="margin-top:1rem;font-size:0.72rem;opacity:0.5;line-height:1.6;"><i class="fas fa-info-circle me-1"></i>Booking requires admin approval. Payment due after approval.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sos-modal" id="sosModal">
+  <div class="sos-modal-inner"><div class="sos-pulse"></div><i class="fas fa-bell sos-icon"></i><h3>Send Emergency Alert?</h3><p>This will notify the admin immediately.</p>
+    <div class="sos-modal-actions">
+      <button class="btn btn-brand w-100" style="background:var(--red);border-color:var(--red);justify-content:center;" id="confirmSos"><i class="fas fa-bell me-2"></i>Send SOS Alert</button>
+      <button class="btn btn-ghost w-100" id="cancelSos">Cancel</button>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'user_sta/main.js' %}"></script>
+</body>
+</html>

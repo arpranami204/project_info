@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{%load static%}
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us – ElderCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'user_sta/style.css'%}"/>
+  <style>
+    .contact-hero { background:linear-gradient(135deg,var(--text-primary) 0%,#3d2e20 100%);padding:5rem 0 3rem;position:relative;overflow:hidden; }
+    .contact-hero::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(193,122,58,0.18),transparent 60%); }
+    .contact-hero::after { content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.05) 1px,transparent 1px);background-size:36px 36px; }
+    .contact-card { background:#fff;border:1px solid var(--warm-border);border-radius:var(--radius-lg);padding:1.85rem;box-shadow:var(--shadow-sm);height:100%;transition:var(--transition); }
+    .contact-card:hover { box-shadow:var(--shadow-md);transform:translateY(-2px); }
+    .contact-icon { width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:1rem; }
+    .faq-item { border:1px solid var(--warm-border);border-radius:var(--radius-sm);margin-bottom:0.75rem;overflow:hidden;transition:var(--transition); }
+    .faq-item:hover { border-color:var(--warm-mid); }
+    .faq-q { padding:1rem 1.2rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:0.875rem;color:var(--text-primary);background:#fff;transition:var(--transition); }
+    .faq-q:hover { background:var(--warm-light); }
+    .faq-a { padding:0 1.2rem 1rem;font-size:0.875rem;color:var(--text-secondary);line-height:1.75;display:none; }
+    .faq-item.open .faq-a { display:block;animation:fadeInUp 0.3s ease; }
+    .faq-item.open .faq-q { background:var(--brand-light);color:var(--brand); }
+    .faq-item.open .faq-q i { transform:rotate(180deg); }
+    .faq-q i { transition:var(--transition);color:var(--text-muted); }
+    .section-badge { display:inline-block;background:var(--brand-light);color:var(--brand);border-radius:99px;padding:0.32rem 0.95rem;font-size:0.78rem;font-weight:700;margin-bottom:0.85rem; }
+    .public-nav { background:#fff;border-bottom:1px solid var(--warm-border);padding:0.75rem 0;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm); }
+  </style>
+</head>
+<body>
+<nav class="public-nav">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a href="{% url 'indexuser_view' %}" class="d-flex align-items-center gap-2 text-decoration-none" style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--text-primary);">
+      <span class="brand-icon" style="width:36px;height:36px;background:linear-gradient(135deg,var(--brand),var(--warm-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.9rem;"><i class="fas fa-heart-pulse"></i></span>
+      Elder<em>Care</em>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#pubNav" style="padding:0.3rem;"><i class="fas fa-bars" style="color:var(--text-primary)"></i></button>
+    <div class="collapse navbar-collapse" id="pubNav" style="flex-grow:0;">
+      <ul class="navbar-nav flex-row gap-3 align-items-center">
+        <li><a href="{% url 'indexuser_view' %}" class="nav-link" style="color:var(--text-secondary);font-size:0.875rem;">Home</a></li>
+        <li><a href="{% url 'about_view' %}" class="nav-link" style="color:var(--text-secondary);font-size:0.875rem;">About</a></li>
+        <li><a href="{% url 'contact_view' %}" class="nav-link" style="color:var(--brand);font-weight:600;font-size:0.875rem;">Contact</a></li>
+        <li><a class="btn btn-outline-brand btn-sm" href="{% url 'login_view' %}">Login</a></li>
+        <li><a class="btn btn-brand btn-sm" href="{% url 'register_view' %}">Get Started</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="contact-hero">
+  <div class="container position-relative">
+    <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:99px;padding:0.38rem 0.95rem;color:var(--warm-mid);font-size:0.78rem;font-weight:600;margin-bottom:1.25rem;"><i class="fas fa-envelope"></i> Get In Touch</div>
+    <h1 style="color:#fff;font-size:clamp(2rem,4.5vw,3.2rem);margin-bottom:0.85rem;">We're Here to Help</h1>
+    <p style="color:rgba(255,255,255,0.65);font-size:1rem;max-width:500px;line-height:1.75;">Have a question about ElderCare? Our support team is ready to assist you every step of the way.</p>
+  </div>
+</section>
+
+<section style="padding:4.5rem 0;background:var(--warm-cream);">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Info Cards -->
+      <div class="col-lg-4">
+        <div class="d-flex flex-column gap-3">
+          <div class="contact-card" data-animate="fadeInLeft">
+            <div class="contact-icon" style="background:var(--brand-light);color:var(--brand)"><i class="fas fa-phone"></i></div>
+            <h6 style="font-family:'Playfair Display',serif;margin-bottom:0.35rem;">Phone Support</h6>
+            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.6rem;">Mon–Sat, 9am–6pm IST</p>
+            <a href="tel:+911800123456" style="color:var(--brand);font-weight:700;font-size:0.95rem;">+91 8799224022</a>
+          </div>
+          <div class="contact-card" data-animate="fadeInLeft" data-delay="100">
+            <div class="contact-icon" style="background:rgba(61,155,110,0.12);color:var(--green)"><i class="fas fa-envelope"></i></div>
+            <h6 style="font-family:'Playfair Display',serif;margin-bottom:0.35rem;">Email Support</h6>
+            <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:0.6rem;">We reply within 24 hours</p>
+            <a href="mailto:support@eldercare.in" style="color:var(--brand);font-weight:700;font-size:0.9rem;">arpranami204@gmail.com</a>
+          </div>
+          <div class="contact-card" data-animate="fadeInLeft" data-delay="200">
+            <div class="contact-icon" style="background:rgba(74,127,212,0.12);color:var(--blue)"><i class="fas fa-location-dot"></i></div>
+            <h6 style="font-family:'Playfair Display',serif;margin-bottom:0.35rem;">Office</h6>
+            <p style="color:var(--text-secondary);font-size:0.85rem;line-height:1.7;">12, Care Avenue, Sector 15<br>Ahmedabad, Gujarat 380015</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="col-lg-8" data-animate="fadeInRight">
+        <div class="contact-card">
+          <h4 style="font-family:'Playfair Display',serif;margin-bottom:1.75rem;font-size:1.5rem;"><i class="fas fa-paper-plane me-2" style="color:var(--brand)"></i>Send Us a Message</h4>
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="form-label-custom">Full Name *</label><input type="text" class="form-ctrl" placeholder="Your full name"/></div>
+              <div class="col-md-6"><label class="form-label-custom">Email Address *</label><input type="email" class="form-ctrl" placeholder="you@email.com"/></div>
+              <div class="col-md-6"><label class="form-label-custom">Phone Number</label><input type="tel" class="form-ctrl" placeholder="+91 98765 43210"/></div>
+              <div class="col-md-6"><label class="form-label-custom">Subject *</label>
+                <select class="form-ctrl">
+                  <option value="">Select a topic</option>
+                  <option>Booking Issue</option>
+                  <option>Payment Problem</option>
+                  <option>SOS / Emergency Support</option>
+                  <option>Account Access</option>
+                  <option>Feedback</option>
+                  <option>General Query</option>
+                </select>
+              </div>
+              <div class="col-12"><label class="form-label-custom">Message *</label><textarea class="form-ctrl" rows="5" placeholder="Describe your issue or question..."></textarea></div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-brand px-4"><i class="fas fa-paper-plane me-2"></i>Send Message</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="padding:3.5rem 0 5rem;background:var(--warm-light);">
+  <div class="container">
+    <div class="text-center mb-4" data-animate="fadeInUp">
+      <span class="section-badge">FAQ</span>
+      <h2 style="font-size:2rem;">Frequently Asked Questions</h2>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="faq-item" data-animate="fadeInUp">
+          <div class="faq-q" onclick="toggleFaq(this)">How do I book a doctor appointment? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Log in to your account, navigate to "Doctors" from the sidebar, select an available doctor, choose your preferred date and time, and submit your booking request. Admin will approve it shortly after review.</div>
+        </div>
+        <div class="faq-item" data-animate="fadeInUp" data-delay="50">
+          <div class="faq-q" onclick="toggleFaq(this)">What happens when I trigger an SOS alert? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Your SOS alert is instantly stored in our system and the admin receives an immediate notification. The admin will contact you or dispatch emergency assistance based on your registered address and emergency contact information.</div>
+        </div>
+        <div class="faq-item" data-animate="fadeInUp" data-delay="100">
+          <div class="faq-q" onclick="toggleFaq(this)">How do I make a payment after booking approval? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Once your booking is approved by the admin, the payment option becomes active in your "Bookings" section. You can pay via UPI or Card. The transaction is recorded and viewable in your payment history.</div>
+        </div>
+        <div class="faq-item" data-animate="fadeInUp" data-delay="150">
+          <div class="faq-q" onclick="toggleFaq(this)">Can I add multiple elder profiles? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Yes! You can add and manage multiple elder profiles under a single account. Each profile maintains separate health records, medicine schedules, and booking history.</div>
+        </div>
+        <div class="faq-item" data-animate="fadeInUp" data-delay="200">
+          <div class="faq-q" onclick="toggleFaq(this)">Is my data secure on ElderCare? <i class="fas fa-chevron-down"></i></div>
+          <div class="faq-a">Absolutely. ElderCare uses Django's built-in authentication, session management, and role-based access control to ensure your personal and medical data is fully secure, private, and never shared without consent.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--text-primary);color:rgba(255,255,255,0.55);padding:1.75rem 0;text-align:center;font-size:0.82rem;">
+  © 2025 ElderCare · Built with <i class="fas fa-heart" style="color:var(--brand)"></i> for elderly well-being · Made in India 🇮🇳
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'user_sta/main.js'%}"></script>
+</body>
+</html>

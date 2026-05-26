@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+{%load static%}
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caretakers – ElderCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'user_sta/style.css' %}" />
+  <style>
+    .ct-card {
+      background: #fff;
+      border: 1px solid var(--warm-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      padding: 1.75rem;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ct-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-5px);
+    }
+
+    .ct-card-strip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .ct-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .ct-stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .ct-stat {
+      background: var(--warm-light);
+      border-radius: 10px;
+      padding: 0.6rem 0.5rem;
+      text-align: center;
+    }
+
+    .ct-stat .cs-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--brand);
+      display: block;
+    }
+
+    .ct-stat .cs-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .avail-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .avail-status.available {
+      background: rgba(61, 155, 110, 0.12);
+      color: var(--green);
+    }
+
+    .avail-status.busy {
+      background: rgba(245, 158, 11, 0.12);
+      color: #f59e0b;
+    }
+
+    .rate-tag {
+      background: var(--warm-light);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--brand);
+      border: 1px solid var(--warm-border);
+    }
+  </style>
+</head>
+
+<body class="dashboard-body">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-icon"><i class="fas fa-heart-pulse"></i></div><span>Elder<em
+          style="font-style:italic;color:var(--brand);">Care</em></span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="{% url 'dashboardindex_view' %}" class="sidebar-link"><i
+          class="fas fa-gauge-high"></i><span>Dashboard</span></a>
+      <a href="{% url 'elderlist_view' %}" class="sidebar-link"><i class="fas fa-id-card"></i><span>Elder
+          Profiles</span><span class="badge-pill">3</span></a>
+      <a href="#" class="sidebar-link"><i class="fas fa-notes-medical"></i><span>Health Records</span></a>
+      <a href="#" class="sidebar-link"><i class="fas fa-pills"></i><span>Medicines</span><span
+          class="badge-pill warn">2</span></a>
+      <div class="nav-section-label">Services</div>
+      <a href="{% url 'doctorlist_view' %}" class="sidebar-link"><i
+          class="fas fa-user-doctor"></i><span>Doctors</span></a>
+      <a href="{% url 'caretaker_view' %}" class="sidebar-link active"><i
+          class="fas fa-hands-holding-heart"></i><span>Caretakers</span></a>
+
+      <a href="{% url 'services_view' %}" class="sidebar-link"><i
+          class="fas fa-calendar-check"></i><span>Bookings</span></a>
+      <a href="{% url 'appointment_view' %}" class="sidebar-link"><i
+          class="fas fa-clock-rotate-left"></i><span>History</span></a>
+      <a href="#" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+      <div class="nav-section-label">Alerts</div>
+      <a href="#" class="sidebar-link sos-link"><i class="fas fa-bell"></i><span>SOS Alerts</span><span
+          class="badge-pill danger">!</span></a>
+      <a href="#" class="sidebar-link"><i class="fas fa-envelope-open-text"></i><span>Notifications</span></a>
+      <div class="nav-section-label">Account</div>
+      <a href="{% url 'profile_view' %}" class="sidebar-link"><i class="fas fa-user-gear"></i><span>Profile</span></a>
+      <a href="{% url 'login_view' %}" class="sidebar-link"><i
+          class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+    </nav>
+  </div>
+  <div class="main-content" id="mainContent">
+    <div class="topbar">
+      <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+      <div class="topbar-title">Caretakers</div>
+      <div class="topbar-right">
+        <button class="sos-trigger" id="sosBtn"><i class="fas fa-bell"></i> SOS</button>
+        <div class="topbar-notif"><i class="fas fa-bell"></i><span class="notif-dot"></span></div>
+        <div class="topbar-user"><img
+            src="https://ui-avatars.com/api/?name={{ request.user }}&background=e8d5b7&color=7a5c3a&size=36&rounded=true"
+            alt="" /><span>{{ request.user }}</span></div>
+      </div>
+    </div>
+    <div class="content-area">
+      {% if messages %}
+      <div class="messages-container mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <div class="welcome-banner d-flex align-items-center justify-content-between flex-wrap gap-3"
+        data-animate="fadeInUp">
+        <div>
+          <h4 style="font-family:'Playfair Display',serif;margin-bottom:0.25rem;">Available Caretakers</h4>
+          <p style="color:rgba(255,255,255,0.65);font-size:0.875rem;margin:0;">Professional caretakers for daily
+            eldercare assistance</p>
+        </div>
+        <div class="dc-filters">
+          <button class="filter-btn active">All</button>
+          <button class="filter-btn">Female</button>
+          <button class="filter-btn">Male</button>
+          <button class="filter-btn">Available</button>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-1">
+        {% for c in caretaker %}
+        <div class="col-md-6 col-xl-4" data-animate="fadeInUp" data-delay="0">
+          <div class="ct-card">
+            <div class="ct-card-strip" style="background:linear-gradient(90deg,var(--brand),var(--warm-mid))"></div>
+            <div class="d-flex align-items-start justify-content-between mb-1 pt-1">
+              <div class="ct-avatar" style="background:var(--brand-light);color:var(--brand);">A</div>
+              <span class="avail-status available"><span
+                  style="width:6px;height:6px;border-radius:50%;background:currentColor;"></span>{{c.availability_status}}</span>
+            </div>
+            <div
+              style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(139,92,246,0.1);color:var(--purple);border-radius:99px;padding:0.2rem 0.65rem;font-size:0.7rem;font-weight:700;margin-bottom:0.75rem;">
+              <i class="fas fa-venus"></i>{{c.gender}}
+            </div>
+            <h6 style="font-family:'Playfair Display',serif;margin-bottom:0.85rem;">{{c.full_name}}</h6>
+            <div class="ct-stat-row">
+              <div class="ct-stat"><span class="cs-num">7</span>
+                <div class="cs-label">{{c.experience_years}}</div>
+              </div>
+              <div class="ct-stat"><span class="cs-num">4.8</span>
+                <div class="cs-label">Rating</div>
+              </div>
+              <div class="ct-stat"><span class="cs-num">42</span>
+                <div class="cs-label">Patients</div>
+              </div>
+            </div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.4rem;"><i
+                class="fas fa-location-dot me-2" style="color:var(--brand)"></i>{{c.address}}</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:1rem;"><i class="fas fa-phone me-2"
+                style="color:var(--brand)"></i>{{c.phone_number}}</div>
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="rate-tag"><i class="fas fa-indian-rupee-sign me-1"></i>{{c.service_charge}}/day</span>
+              <div class="d-flex gap-1">
+                <a href="{% url 'create_booking' %}?caretaker={{c.full_name}}" class="btn btn-brand btn-sm"><i
+                    class="fas fa-hands-helping me-1"></i>Request</a>
+                
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sos-modal" id="sosModal">
+    <div class="sos-modal-inner">
+      <div class="sos-pulse"></div><i class="fas fa-bell sos-icon"></i>
+      <h3>Send Emergency Alert?</h3>
+      <p>This will notify the admin immediately.</p>
+      <div class="sos-modal-actions">
+        <button class="btn btn-brand w-100"
+          style="background:var(--red);border-color:var(--red);justify-content:center;" id="confirmSos"><i
+            class="fas fa-bell me-2"></i>Send SOS Alert</button>
+        <button class="btn btn-ghost w-100" id="cancelSos">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'user_sta/main.js' %}"></script>
+</body>
+
+</html>

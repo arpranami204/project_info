@@ -1,0 +1,96 @@
+{% extends 'user_temp/user_master.html' %}
+{% load static %}
+
+{% block title %}Payments – ElderCare{% endblock %}
+{% block heading %}Transaction History{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Summary Header -->
+    <div class="col-12" data-animate="fadeInUp">
+        <div class="welcome-banner p-4 d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="mb-1">Payment Receipts</h3>
+                <p class="mb-0 opacity-75">View and download your service payment history.</p>
+            </div>
+            <div class="bg-white bg-opacity-25 rounded-3 p-2 px-3">
+                <i class="fas fa-shield-check me-2"></i>Secure Transactions
+            </div>
+        </div>
+    </div>
+
+    <!-- Payments Table -->
+    <div class="col-12" data-animate="fadeInUp" data-delay="100">
+        <div class="dash-card">
+            <div class="dc-header border-bottom">
+                <h5><i class="fas fa-history me-2 text-brand"></i>Recent Transactions</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="dash-table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Booking Ref</th>
+                                <th>Service Type</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th>Transaction ID</th>
+                                <th>Date</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in payments %}
+                            <tr>
+                                <td><span class="fw-bold text-brand">#{{ item.booking.id }}</span></td>
+                                <td>{{ item.booking.service_type }}</td>
+                                <td><span class="fw-bold text-dark">₹{{ item.amount }}</span></td>
+                                <td>
+                                    {% if item.payment_method == 'Card' %}
+                                        <i class="fas fa-credit-card me-1 text-muted"></i> Card
+                                    {% elif item.payment_method == 'UPI' %}
+                                        <i class="fas fa-mobile-screen-button me-1 text-muted"></i> UPI
+                                    {% else %}
+                                        <i class="fas fa-money-bill-wave me-1 text-muted"></i> {{ item.payment_method }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if item.payment_status == 'Completed' %}
+                                        <span class="badge bg-soft-success text-success"><i class="fas fa-check-circle me-1"></i>{{ item.payment_status }}</span>
+                                    {% else %}
+                                        <span class="badge bg-soft-warning text-warning"><i class="fas fa-clock me-1"></i>{{ item.payment_status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td><code>{{ item.transaction_id }}</code></td>
+                                <td><span class="text-muted small">{{ item.payment_date|date:"M d, Y" }}</span></td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="{% url 'payment_success_view' item.transaction_id %}" class="btn-icon-sm view" title="View Receipt"><i class="fas fa-file-invoice"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="fas fa-receipt fa-3x mb-3 opacity-25"></i>
+                                        <p>No payment records found. Payments appear here after you pay for a booking.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-soft-success { background-color: rgba(16, 185, 129, 0.1); }
+    .bg-soft-warning { background-color: rgba(245, 158, 11, 0.1); }
+    code { font-size: 0.8rem; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #475569; }
+</style>
+{% endblock %}

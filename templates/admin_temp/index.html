@@ -1,0 +1,179 @@
+{% extends 'admin_temp/master.html' %}
+{% load static %}
+{% block content %}  
+
+<style>
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+        background-color: transparent;
+        color: #0d6efd !important;
+    }
+</style>
+
+
+
+
+<main class="nxl-container">
+        <div class="nxl-content">
+            <!-- [ Main Content ] start -->
+            <div class="main-content">
+                <div class="row">
+                    <!-- [Leads] start -->
+                    <div class="col-xxl-11">
+                        <div class="card stretch stretch-full"> 
+                           
+                            <div class="card-body custom-card-action p-0">
+                                <div class="table-responsive">
+                                    <div class="container pt-5">
+                                        {%csrf_token%} 
+
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} text-center" role="alert">{{ message }}</div>
+                                                
+                                            {% endfor %}
+                                        {% endif %}
+                                    
+                                       
+                                                
+
+                                        <h2 class="text-center fw-bold mb-4">User Management</h2>
+
+                                        <!-- Bootstrap Tabs -->
+                                        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link border-0 text-muted fw-semibold active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+                                                    All Users
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link border-0 text-muted fw-semibold" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button" role="tab">
+                                                    Approved Users
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link border-0 text-muted fw-semibold" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" type="button" role="tab">
+                                                    Rejected Users
+                                                </button>
+                                            </li> 
+                                        </ul>
+
+                                        <div class="tab-content" id="myTabContent">
+
+                                            <!-- All Users Tab -->
+                                            <div class="tab-pane fade show active" id="all" role="tabpanel">
+                                                <div class="card shadow-none border-0 rounded-4">
+                                                    <div class="card-body">
+                                                        <table class="table table-hover mb-10">
+                                                            <thead >
+                                                                <tr class="border-b">
+                                                                    <th>#</th>
+                                                                    <th>Username</th>
+                                                                    <th>Role</th>
+                                                                    <th>Status</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead> 
+                                                            <tbody>
+                                                                {% for user in tt %}
+                                                                    <tr>
+                                                                        <td>{{ forloop.counter }}</td>
+                                                                        <td>{{ user.username }}</td>
+                                                                        <td>{{ user.role }}</td>
+                                                                        <td>
+                                                                            {% if user.is_approved %}
+                                                                                <span class="badge bg-success">Approved</span>
+                                                                            {% else %}
+                                                                                <span class="badge bg-danger">Rejected</span>
+                                                                            {% endif %}
+                                                                        </td>
+                                                                        <td> 
+                                                                            {% if not user.is_approved %}
+                                                                                <a href="{% url 'approve_user' user.id %}" class="btn btn-success btn-sm rounded-pill">Approve</a>
+                                                                            {% else %}
+                                                                                <a href="{% url 'reject_user' user.id %}" class="btn btn-danger btn-sm rounded-pill">Reject</a>
+                                                                            {% endif %}
+                                                                        </td>
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr><td colspan="5" class="text-center text-muted">No users found.</td></tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Approved Users Tab -->
+                                            <div class="tab-pane fade" id="approved" role="tabpanel">
+                                                <div class="card shadow-none border-0 rounded-4 mt-3">
+                                                    <div class="card-body">
+                                                        <table class="table table-hover mb-10">
+                                                            <thead>
+                                                                <tr class="border-b">
+                                                                    <th>#</th>
+                                                                    <th>Username</th>
+                                                                    <th>Role</th>
+                                                                    <th>Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for user in approved_users %}
+                                                                    <tr>
+                                                                        <td>{{ forloop.counter }}</td>
+                                                                        <td>{{ user.username }}</td>
+                                                                        <td>{{ user.role }}</td>
+                                                                        <td><span class="badge bg-success">Approved</span></td>
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr><td colspan="4" class="text-center text-muted">No approved users.</td></tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Rejected Users Tab -->
+                                            <div class="tab-pane fade" id="rejected" role="tabpanel">
+                                                <div class="card shadow-none border-0 rounded-4 mt-3">
+                                                    <div class="card-body">
+                                                        <table class="table table-hover mb-10">
+                                                            <thead>
+                                                                <tr class="border-b">
+                                                                    <th>#</th>
+                                                                    <th>Username</th>
+                                                                    <th>Role</th>
+                                                                    <th>Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for user in rejected_users %}
+                                                                    <tr>
+                                                                        <td>{{ forloop.counter }}</td>
+                                                                        <td>{{ user.username }}</td>
+                                                                        <td>{{ user.role }}</td>
+                                                                        <td><span class="badge bg-danger">Rejected</span></td>
+                                                                    </tr>
+                                                                {% empty %}
+                                                                    <tr><td colspan="4" class="text-center text-muted">No rejected users.</td></tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>        
+                    
+                </div>
+            </div>
+             
+        </div>
+ </main>
+
+    {% endblock %}

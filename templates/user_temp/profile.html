@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{%load static%}
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile – ElderCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'user_sta/style.css' %}"/>
+  <style>
+    .profile-cover { height:190px;background:linear-gradient(135deg,var(--text-primary) 0%,#3d2e20 60%,#7a5c3a 100%);border-radius:var(--radius-lg) var(--radius-lg) 0 0;position:relative;overflow:hidden; }
+    .profile-cover::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(193,122,58,0.25),transparent 60%); }
+    .profile-cover::after { content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.06) 1px,transparent 1px);background-size:30px 30px; }
+    .profile-avatar-wrap { position:absolute;bottom:-48px;left:2rem;z-index:1; }
+    .profile-avatar { width:96px;height:96px;border-radius:50%;border:4px solid #fff;background:var(--brand-light);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--brand);box-shadow:var(--shadow-lg); }
+    .profile-card { background:#fff;border:1px solid var(--warm-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden; }
+    .profile-info-section { padding:4rem 2rem 1.5rem; }
+    .profile-tab-nav { display:flex;gap:0;border-bottom:1px solid var(--warm-border);padding:0 2rem; }
+    .ptab { padding:0.75rem 1.25rem;font-size:0.85rem;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;transition:var(--transition);display:flex;align-items:center;gap:0.4rem; }
+    .ptab.active { color:var(--brand);border-bottom-color:var(--brand); }
+    .ptab:hover:not(.active) { color:var(--text-secondary); }
+    .ptab-content { display:none;padding:1.75rem 2rem 2rem; }
+    .ptab-content.active { display:block;animation:fadeInUp 0.35s ease; }
+    .info-row { display:flex;align-items:flex-start;gap:1rem;padding:0.9rem 0;border-bottom:1px solid rgba(232,213,183,0.5); }
+    .info-row:last-child { border-bottom:none; }
+    .info-label { font-size:0.74rem;font-weight:700;color:var(--text-muted);width:150px;flex-shrink:0;padding-top:2px;text-transform:uppercase;letter-spacing:0.05em; }
+    .info-val { font-size:0.875rem;color:var(--text-primary); }
+    .badge-role { display:inline-flex;align-items:center;gap:0.4rem;background:var(--brand-light);color:var(--brand);border-radius:99px;padding:0.25rem 0.8rem;font-size:0.75rem;font-weight:700; }
+    .stat-mini { background:var(--warm-light);border-radius:var(--radius-sm);padding:1rem;text-align:center;border:1px solid var(--warm-border);transition:var(--transition); }
+    .stat-mini:hover { box-shadow:var(--shadow-sm); }
+    .stat-mini .sm-num { font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--brand);display:block; }
+    .stat-mini .sm-label { font-size:0.72rem;color:var(--text-muted);font-weight:600; }
+    .security-item { display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;border-bottom:1px solid rgba(232,213,183,0.5); }
+    .security-item:last-child { border-bottom:none; }
+  </style>
+</head>
+<body class="dashboard-body">
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><div class="sidebar-brand-icon"><i class="fas fa-heart-pulse"></i></div><span>Elder<em style="font-style:italic;color:var(--brand);">Care</em></span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="{% url 'dashboardindex_view' %}" class="sidebar-link"><i class="fas fa-gauge-high"></i><span>Dashboard</span></a>
+    <a href="{% url 'elderlist_view' %}" class="sidebar-link"><i class="fas fa-id-card"></i><span>Elder Profiles</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-notes-medical"></i><span>Health Records</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-pills"></i><span>Medicines</span></a>
+    <div class="nav-section-label">Services</div>
+    <a href="{% url 'doctorlist_view' %}" class="sidebar-link"><i class="fas fa-user-doctor"></i><span>Doctors</span></a>
+    <a href="{% url 'caretaker_view' %}" class="sidebar-link"><i class="fas fa-hands-holding-heart"></i><span>Caretakers</span></a>
+    <a href="{% url 'services_view' %}" class="sidebar-link"><i class="fas fa-calendar-check"></i><span>Bookings</span></a>
+    <a href="{% url 'appointment_view' %}" class="sidebar-link"><i class="fas fa-clock-rotate-left"></i><span>History</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+    <div class="nav-section-label">Alerts</div>
+    <a href="#" class="sidebar-link sos-link"><i class="fas fa-bell"></i><span>SOS Alerts</span></a>
+    <a href="#" class="sidebar-link"><i class="fas fa-envelope-open-text"></i><span>Notifications</span></a>
+    <div class="nav-section-label">Account</div>
+    <a href="{% url 'profile_view' %}" class="sidebar-link active"><i class="fas fa-user-gear"></i><span>Profile</span></a>
+    <a href="{% url 'login_view' %}" class="sidebar-link"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+  </nav>
+</div>
+<div class="main-content" id="mainContent">
+  <div class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    <div class="topbar-title">My Profile</div>
+    <div class="topbar-right">
+      <button class="sos-trigger" id="sosBtn"><i class="fas fa-bell"></i> SOS</button>
+      <div class="topbar-notif"><i class="fas fa-bell"></i><span class="notif-dot"></span></div>
+      <div class="topbar-user"><img src="https://ui-avatars.com/api/?name={{ request.user }}&background=e8d5b7&color=7a5c3a&size=36&rounded=true" alt=""/><span>{{ request.user }}</span></div>
+    </div>
+  </div>
+  <div class="content-area">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="profile-card" data-animate="fadeInUp">
+          <div class="profile-cover">
+            <div class="profile-avatar-wrap"><div class="profile-avatar">R</div></div>
+          </div>
+          <div class="profile-info-section">
+            <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
+              <div>
+                <h4 style="font-family:'Playfair Display',serif;margin-bottom:0.3rem;">{{ request.user }}</h4>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <span class="badge-role"><i class="fas fa-user"></i> User</span>
+                  <span style="font-size:0.75rem;color:var(--green);display:flex;align-items:center;gap:0.3rem;"><i class="fas fa-circle" style="font-size:0.5rem;"></i> Active Member</span>
+                </div>
+              </div>
+              <button class="btn btn-outline-brand btn-sm" onclick="switchTab('edit')"><i class="fas fa-pen me-1"></i>Edit Profile</button>
+            </div>
+          </div>
+          <div class="profile-tab-nav">
+            <div class="ptab active" onclick="switchTab('info')"><i class="fas fa-user"></i>Personal Info</div>
+            <div class="ptab" onclick="switchTab('edit')"><i class="fas fa-pen"></i>Edit</div>
+            <div class="ptab" onclick="switchTab('security')"><i class="fas fa-lock"></i>Security</div>
+          </div>
+          <!-- INFO TAB -->
+          <div class="ptab-content active" id="tab-info">
+            <div class="info-row"><span class="info-label">Full Name</span><span class="info-val">{{ request.user }}</span></div>
+            <div class="info-row"><span class="info-label">Username</span><span class="info-val">{{ user.username }}</span></div>
+            <div class="info-row"><span class="info-label">Email</span><span class="info-val">{{ user.email }}</span></div>
+            <div class="info-row"><span class="info-label">Phone</span><span class="info-val">{{ user.phone  }}</span></div>
+            <div class="info-row"><span class="info-label">Address</span><span class="info-val">{{ user.address }}</span></div>
+            <div class="info-row"><span class="info-label">Role</span><span class="info-val"><span class="badge-role"><i class="fas fa-user"></i> User</span></span></div>
+            <div class="info-row"><span class="info-label">Member Since</span><span class="info-val"></span></div>
+            <div class="info-row"><span class="info-label">Verified</span><span class="info-val" style="color:var(--green)"><i class="fas fa-check-circle me-1"></i>Email Verified</span></div>
+          </div>
+          <!-- EDIT TAB -->
+          <div class="ptab-content" id="tab-edit">
+            <div class="row g-3">
+              <div class="col-md-6"><label class="form-label-custom">First Name</label><input type="text" class="form-ctrl" value="Raman"/></div>
+              <div class="col-md-6"><label class="form-label-custom">Last Name</label><input type="text" class="form-ctrl" value="Sharma"/></div>
+              <div class="col-md-6"><label class="form-label-custom">Email</label><input type="email" class="form-ctrl" value="raman@example.com"/></div>
+              <div class="col-md-6"><label class="form-label-custom">Phone Number</label><input type="tel" class="form-ctrl" value="+91 98765 43210"/></div>
+              <div class="col-12"><label class="form-label-custom">Address</label><textarea class="form-ctrl" rows="2">12, Park Street, Ahmedabad, Gujarat</textarea></div>
+              <div class="col-12"><label class="form-label-custom">Profile Image</label><input type="file" class="form-ctrl" accept="image/*"/></div>
+              <div class="col-12 d-flex gap-2">
+                <button class="btn btn-brand"><i class="fas fa-save me-1"></i>Save Changes</button>
+                <button class="btn btn-ghost" onclick="switchTab('info')">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <!-- SECURITY TAB -->
+          <div class="ptab-content" id="tab-security">
+            <div class="security-item">
+              <div><div style="font-weight:600;font-size:0.875rem;">Change Password</div><div style="font-size:0.78rem;color:var(--text-muted);">Last changed 3 months ago</div></div>
+              <button class="btn btn-outline-brand btn-sm">Change</button>
+            </div>
+            <div class="security-item">
+              <div><div style="font-weight:600;font-size:0.875rem;">Two-Factor Auth</div><div style="font-size:0.78rem;color:var(--text-muted);">Not enabled</div></div>
+              <button class="btn btn-ghost btn-sm">Enable</button>
+            </div>
+            <div class="security-item">
+              <div><div style="font-weight:600;font-size:0.875rem;">Active Sessions</div><div style="font-size:0.78rem;color:var(--text-muted);">1 active session</div></div>
+              <button class="btn btn-ghost btn-sm" style="color:var(--red);border-color:var(--red);">Logout All</button>
+            </div>
+            <div class="mt-3">
+              <label class="form-label-custom">Current Password</label>
+              <input type="password" class="form-ctrl mb-2" placeholder="Enter current password"/>
+              <label class="form-label-custom">New Password</label>
+              <input type="password" class="form-ctrl mb-2" placeholder="Enter new password"/>
+              <label class="form-label-custom">Confirm Password</label>
+              <input type="password" class="form-ctrl mb-3" placeholder="Confirm new password"/>
+              <button class="btn btn-brand"><i class="fas fa-lock me-1"></i>Update Password</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Stats -->
+      <div class="col-lg-4">
+        <div class="dash-card mb-3" data-animate="fadeInRight">
+          <div class="dc-header"><h5><i class="fas fa-chart-bar"></i>Activity Summary</h5></div>
+          <div class="p-3">
+            <div class="row g-2">
+              <div class="col-6"><div class="stat-mini"><span class="sm-num">3</span><div class="sm-label">Elder Profiles</div></div></div>
+              <div class="col-6"><div class="stat-mini"><span class="sm-num">7</span><div class="sm-label">Bookings</div></div></div>
+              <div class="col-6"><div class="stat-mini"><span class="sm-num">2</span><div class="sm-label">SOS Alerts</div></div></div>
+              <div class="col-6"><div class="stat-mini"><span class="sm-num">5</span><div class="sm-label">Payments</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dash-card" data-animate="fadeInRight" data-delay="100">
+          <div class="dc-header"><h5><i class="fas fa-link"></i>Quick Links</h5></div>
+          <div class="p-3 d-flex flex-column gap-2">
+            <a href="{% url 'elderlist_view' %}" class="btn btn-ghost text-start btn-sm"><i class="fas fa-id-card me-2" style="color:var(--brand)"></i>Manage Elders</a>
+            <a href="{% url 'appointment_view' %}" class="btn btn-ghost text-start btn-sm"><i class="fas fa-history me-2" style="color:var(--brand)"></i>View History</a>
+            <a href="{% url 'services_view' }" class="btn btn-ghost text-start btn-sm"><i class="fas fa-calendar-check me-2" style="color:var(--brand)"></i>My Bookings</a>
+            <a href="{% url 'doctorlist_view' %}" class="btn btn-ghost text-start btn-sm"><i class="fas fa-user-doctor me-2" style="color:var(--brand)"></i>Book Doctor</a>
+            <a href="{% url 'login_view' %}" class="btn btn-ghost text-start btn-sm" style="color:var(--red)"><i class="fas fa-right-from-bracket me-2"></i>Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sos-modal" id="sosModal">
+  <div class="sos-modal-inner"><div class="sos-pulse"></div><i class="fas fa-bell sos-icon"></i><h3>Send Emergency Alert?</h3><p>This will notify the admin immediately.</p>
+    <div class="sos-modal-actions">
+      <button class="btn btn-brand w-100" style="background:var(--red);border-color:var(--red);justify-content:center;" id="confirmSos"><i class="fas fa-bell me-2"></i>Send SOS Alert</button>
+      <button class="btn btn-ghost w-100" id="cancelSos">Cancel</button>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'user_sta/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% extends 'user_temp/user_master.html' %}
+{% load static %}
+
+{% block title %}Elder Profile List{% endblock %}
+{% block heading %}Manage Elder Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card stretch stretch-full border-0 shadow-sm mt-3"> 
+            <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom py-3">
+                <h5 class="card-title mb-0" style="color: var(--brand);">List Elder Profile</h5>
+                <div>
+                    <a href="{% url 'create_elderprofile' %}" class="btn btn-brand" style="background-color: var(--brand); border-color: var(--brand); color: white;">
+                        <i class="fas fa-plus me-2"></i> Create New
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Blood Group</th>
+                                <th>Medical Condition</th>
+                                <th>Emergency Contact</th>
+                                <th>Relation</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in profiles %}
+                            <tr>
+                                <td>{{ item.full_name }}</td>
+                                <td>{{ item.age }}</td>
+                                <td>{{ item.gender }}</td>
+                                <td>{{ item.blood_group }}</td>
+                                <td>{{ item.medical_condition }}</td>
+                                <td>{{ item.emergency_contact }}</td>
+                                <td>{{ item.relation_with_user }}</td>
+                                <td class="text-end">
+                                    <a href="{% url 'update_elderprofile' item.id %}" class="btn btn-sm btn-outline-info me-1"><i class="fas fa-edit"></i></a>
+                                    <a href="{% url 'delete_elderprofile' item.id %}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="100%" class="text-center py-4 text-muted">No Elder Profile records found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>        
+</div>
+{% endblock %}

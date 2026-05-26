@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{%load static%}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ElderCare – Caring for Your Loved Ones, Digitally</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{% static 'user_sta/style.css'%}"/>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'indexuser_view' %}">
+      <span class="brand-icon"><i class="fas fa-heart-pulse"></i></span>
+      <span class="brand-text">Elder<em>Care</em></span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="padding:0.4rem;">
+      <span style="display:block;width:22px;height:2px;background:var(--text-primary);margin:5px 0;border-radius:2px;transition:all 0.3s"></span>
+      <span style="display:block;width:22px;height:2px;background:var(--text-primary);margin:5px 0;border-radius:2px;transition:all 0.3s"></span>
+      <span style="display:block;width:14px;height:2px;background:var(--text-primary);margin:5px 0;border-radius:2px;transition:all 0.3s"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link active" href="{% url 'indexuser_view' %}">Home</a></li>
+       
+        <li class="nav-item"><a class="nav-link" href="{% url 'about_view' %}">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'contact_view' %}">Contact</a></li>
+        <li class="nav-item ms-lg-3">
+          <a class="btn btn-outline-brand" href="{% url 'login_view' %}">Login</a>
+        </li>
+        <li class="nav-item ms-lg-2">
+          <a class="btn btn-brand" href="{% url 'register_view' %}"><i class="fas fa-user-plus me-2"></i>Get Started</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero-section" id="home">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="floating-dots"></div>
+  </div>
+  <div class="container">
+    <div class="row align-items-center min-vh-100">
+      <div class="col-lg-6 hero-content" data-animate="fadeInLeft">
+        <span class="hero-badge"><i class="fas fa-shield-heart"></i>Trusted Care Management</span>
+        <h1 class="hero-title">
+          Caring for Your<br/>
+          Loved Ones,<br/>
+          <em>Digitally.</em>
+        </h1>
+        <p class="hero-desc">
+          A comprehensive platform for managing elderly health records, medicine schedules,
+          emergency alerts, and care bookings — all in one secure place.
+        </p>
+        <div class="hero-actions">
+          <a href="{% url 'register_view' %}" class="btn btn-brand btn-lg">
+            <i class="fas fa-user-plus me-2"></i>Register Now
+          </a>
+          <a href="#features" class="btn btn-ghost btn-lg">
+            <i class="fas fa-play-circle me-2"></i>Learn More
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-pill">
+            <span class="stat-num" data-count="1200">0</span><span style="font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--brand);font-weight:700;">+</span>
+            <span class="stat-label">Elders Managed</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-pill">
+            <span class="stat-num" data-count="98">0</span><span style="font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--brand);font-weight:700;">%</span>
+            <span class="stat-label">Satisfaction Rate</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-pill">
+            <span class="stat-num" data-count="24">0</span><span style="font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--brand);font-weight:700;">/7</span>
+            <span class="stat-label">SOS Support</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 hero-visual" data-animate="fadeInRight">
+        <div class="hero-card-stack">
+          <div class="floating-card card-health">
+            <div class="fc-icon"><i class="fas fa-heart-pulse"></i></div>
+            <div class="fc-info">
+              <span class="fc-label">Heart Rate</span>
+              <span class="fc-value">72 <small style="font-size:0.75rem;font-weight:500;color:var(--text-muted);">bpm</small></span>
+            </div>
+            <div class="fc-badge normal">Normal</div>
+          </div>
+          <div class="hero-phone-mockup">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-header">
+                <div class="ph-avatar">AR</div>
+                <div>
+                  <div class="ph-name">Aryan Pranami</div>
+                  <div class="ph-role">Elder Profile · Active</div>
+                </div>
+              </div>
+              <div class="phone-vitals">
+                <div class="vital-item"><i class="fas fa-tint"></i><span>BP: 120/80</span></div>
+                <div class="vital-item"><i class="fas fa-fire"></i><span>Sugar: 95 mg/dL</span></div>
+                <div class="vital-item"><i class="fas fa-weight"></i><span>68 kg</span></div>
+                <div class="vital-item"><i class="fas fa-thermometer-half"></i><span>98.4°F</span></div>
+              </div>
+              <div class="phone-meds">
+                <div class="med-title"><i class="fas fa-pills"></i> Today's Medicines</div>
+                <div class="med-item done"><i class="fas fa-check-circle"></i> Metformin 500mg</div>
+                <div class="med-item pending"><i class="fas fa-clock"></i> Amlodipine 5mg</div>
+              </div>
+            </div>
+          </div>
+          <div class="floating-card card-sos">
+            <div class="fc-icon sos"><i class="fas fa-bell"></i></div>
+            <div class="fc-info">
+              <span class="fc-label">SOS Alert</span>
+              <span class="fc-value" style="font-size:0.88rem">Resolved</span>
+            </div>
+            <div class="fc-badge resolved">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ─── -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-header text-center" data-animate="fadeInUp">
+      <span class="section-tag">What We Offer</span>
+      <h2 class="section-title">Complete Care at Every Step</h2>
+      <p class="section-desc">From daily health monitoring to emergency response, ElderCare covers everything your family needs.</p>
+    </div>
+    <div class="row g-4 mt-2">
+      <div class="col-lg-4 col-md-6" data-animate="fadeInUp" data-delay="0">
+        <div class="feature-card" style="--ico-clr:#e8745a">
+          <div class="feat-icon-wrap"><i class="fas fa-notes-medical"></i></div>
+          <h3>Health Monitoring</h3>
+          <p>Track blood pressure, sugar levels, weight, heart rate, and temperature with structured daily records and trend analysis.</p>
+          <a href="{% url 'dashboardindex_view' %}" class="feat-link">Explore Dashboard <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-animate="fadeInUp" data-delay="100">
+        <div class="feature-card" style="--ico-clr:#5a8ae8">
+          <div class="feat-icon-wrap"><i class="fas fa-pills"></i></div>
+          <h3>Medicine Reminders</h3>
+          <p>Set dosage schedules, frequency, and instructions. Never miss a medicine with smart automated reminders.</p>
+          <a href="{% url 'list_medicine' %}" class="feat-link">Manage Medicines <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-animate="fadeInUp" data-delay="200">
+        <div class="feature-card" style="--ico-clr:#5abf8a">
+          <div class="feat-icon-wrap"><i class="fas fa-user-doctor"></i></div>
+          <h3>Doctor Booking</h3>
+          <p>Book appointments with verified doctors. Track booking status from Pending → Approved → Completed seamlessly.</p>
+          <a href="{% url 'doctorlist_view' %}" class="feat-link">Book a Doctor <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-animate="fadeInUp" data-delay="300">
+        <div class="feature-card" style="--ico-clr:#c45ae8">
+          <div class="feat-icon-wrap"><i class="fas fa-hand-holding-heart"></i></div>
+          <h3>Caretaker Services</h3>
+          <p>Request verified caretakers with experience, service charges, and availability displayed upfront for easy decision.</p>
+          <a href="{% url 'caretaker_view' %}" class="feat-link">Find Caretakers <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-animate="fadeInUp" data-delay="400">
+        <div class="feature-card" style="--ico-clr:#e8b85a">
+          <div class="feat-icon-wrap"><i class="fas fa-bell-concierge"></i></div>
+          <h3>Emergency SOS</h3>
+          <p>One-tap SOS alerts notify admins instantly. Every alert is timestamped and tracked through to resolution.</p>
+          <a href="{% url 'list_emergencyalert' %}" class="feat-link">View Alerts <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-animate="fadeInUp" data-delay="500">
+        <div class="feature-card" style="--ico-clr:#5ac4e8">
+          <div class="feat-icon-wrap"><i class="fas fa-credit-card"></i></div>
+          <h3>Payment Management</h3>
+          <p>Secure UPI/Card payments post-booking approval. Full transaction history for users and admins at all times.</p>
+          <a href="{% url 'list_payment' %}" class="feat-link">View Payments <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="workflow-section">
+  <div class="container">
+    <div class="section-header text-center" data-animate="fadeInUp">
+      <span class="section-tag">Process</span>
+      <h2 class="section-title">How ElderCare Works</h2>
+      <p class="section-desc">Getting started is simple. Follow these four easy steps to begin caring for your loved ones digitally.</p>
+    </div>
+    <div class="workflow-steps">
+      <div class="wf-step" data-animate="fadeInUp" data-delay="0">
+        <div class="wf-num">01</div>
+        <div class="wf-icon"><i class="fas fa-user-plus"></i></div>
+        <h4>Register & Login</h4>
+        <p>Create your account and set up elder profiles securely.</p>
+      </div>
+      <div class="wf-connector"><i class="fas fa-chevron-right"></i></div>
+      <div class="wf-step" data-animate="fadeInUp" data-delay="100">
+        <div class="wf-num">02</div>
+        <div class="wf-icon"><i class="fas fa-id-card"></i></div>
+        <h4>Add Elder Profile</h4>
+        <p>Fill in medical conditions, blood group, and emergency contacts.</p>
+      </div>
+      <div class="wf-connector"><i class="fas fa-chevron-right"></i></div>
+      <div class="wf-step" data-animate="fadeInUp" data-delay="200">
+        <div class="wf-num">03</div>
+        <div class="wf-icon"><i class="fas fa-calendar-check"></i></div>
+        <h4>Book Services</h4>
+        <p>Book doctors or caretakers. Admin reviews and approves.</p>
+      </div>
+      <div class="wf-connector"><i class="fas fa-chevron-right"></i></div>
+      <div class="wf-step" data-animate="fadeInUp" data-delay="300">
+        <div class="wf-num">04</div>
+        <div class="wf-icon"><i class="fas fa-circle-check"></i></div>
+        <h4>Pay & Track</h4>
+        <p>Complete payment after approval and track service delivery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header text-center" data-animate="fadeInUp">
+      <span class="section-tag">Testimonials</span>
+      <h2 class="section-title">Families Trust <em>ElderCare</em></h2>
+    </div>
+    <div class="row g-4 mt-2">
+      <div class="col-lg-4" data-animate="fadeInUp" data-delay="0">
+        <div class="testi-card">
+          <div class="testi-quote"><i class="fas fa-quote-left"></i></div>
+          <p>"ElderCare transformed how we manage my father's health. Medicine reminders and doctor bookings are so easy now. I feel at peace knowing everything is tracked."</p>
+          <div class="testi-author">
+            <img src="https://ui-avatars.com/api/?name=Priya+Mehta&background=f0d9c0&color=7a5c3a&rounded=true&size=48" alt=""/>
+            <div><strong>Priya Mehta</strong><span>Family Member</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4" data-animate="fadeInUp" data-delay="100">
+        <div class="testi-card featured">
+          <div class="testi-quote"><i class="fas fa-quote-left"></i></div>
+          <p>"The SOS alert feature gave our entire family peace of mind. The admin response was immediate and reassuring during a stressful situation."</p>
+          <div class="testi-author">
+            <img src="https://ui-avatars.com/api/?name=Suresh+Patel&background=d4e8d0&color=3a6b45&rounded=true&size=48" alt=""/>
+            <div><strong>Suresh Patel</strong><span>Elder User</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4" data-animate="fadeInUp" data-delay="200">
+        <div class="testi-card">
+          <div class="testi-quote"><i class="fas fa-quote-left"></i></div>
+          <p>"Managing all our elderly patients from the admin panel is incredibly streamlined. The booking workflow is perfectly designed for healthcare teams."</p>
+          <div class="testi-author">
+            <img src="https://ui-avatars.com/api/?name=Dr+Anita+Shah&background=d0dff0&color=3a508a&rounded=true&size=48" alt=""/>
+            <div><strong>Dr. Anita Shah</strong><span>Doctor</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box" data-animate="fadeInUp">
+      <div class="cta-glow"></div>
+      <div class="cta-glow-2"></div>
+      <div class="row align-items-center position-relative">
+        <div class="col-lg-7">
+          <h2>Start Managing Care <em>Today</em></h2>
+          <p class="mt-2">Join hundreds of families who trust ElderCare for safe, efficient, and compassionate elderly management.</p>
+        </div>
+        <div class="col-lg-5 text-lg-end mt-4 mt-lg-0">
+          <a href="{% url 'register_view' %}" class="btn btn-brand btn-lg me-3"><i class="fas fa-rocket me-2"></i>Get Started Free</a>
+          <a href="{% url 'login_view' %}" class="btn btn-ghost btn-lg" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="footer-brand">
+          <i class="fas fa-heart-pulse"></i> Elder<em>Care</em>
+        </div>
+        <p class="footer-about">A Django-based elderly care management system — providing digital health monitoring, service booking, and emergency support for families across India.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fas fa-envelope"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-6">
+        <h5 class="footer-heading">Pages</h5>
+        <ul class="footer-links">
+          <li><a href="{% url 'indexuser_view' %}"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="{% url 'indexuser_view' %}"><i class="fas fa-gauge-high"></i> Dashboard</a></li>
+          <li><a href="{% url 'about_view' %}"><i class="fas fa-calendar-check"></i> Services</a></li>
+          <li><a href="{% url 'about_view' %}"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li><a href="{% url 'contact_view' %}"><i class="fas fa-envelope"></i> Contact</a></li>
+          <li><a href="{% url 'login_view' %}"><i class="fas fa-right-to-bracket"></i> Login</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-6">
+        <h5 class="footer-heading">Features</h5>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-notes-medical"></i> Health Records</a></li>
+          <li><a href="#"><i class="fas fa-pills"></i> Medicine Alerts</a></li>
+          <li><a href="#"><i class="fas fa-bell"></i> SOS System</a></li>
+          <li><a href="#"><i class="fas fa-user-doctor"></i> Doctor Booking</a></li>
+          <li><a href="#"><i class="fas fa-hands-holding-heart"></i> Caretakers</a></li>
+          <li><a href="#"><i class="fas fa-credit-card"></i> Payments</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h5 class="footer-heading">Project Info</h5>
+        <div class="footer-info-grid">
+          <div><i class="fas fa-code"></i><span>Django + Bootstrap 5</span></div>
+          <div><i class="fas fa-database"></i><span>SQLite / PostgreSQL</span></div>
+          <div><i class="fas fa-shield-halved"></i><span>Role-Based Auth</span></div>
+          <div><i class="fas fa-graduation-cap"></i><span>Academic Project</span></div>
+          <div><i class="fas fa-mobile-alt"></i><span>Responsive Design</span></div>
+          <div><i class="fas fa-lock"></i><span>Secure & Private</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ElderCare Project · Built with <i class="fas fa-heart text-danger"></i> using Django MVT Architecture · Made in India 🇮🇳</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'user_sta/main.js'%}"></script>
+</body>
+</html>
